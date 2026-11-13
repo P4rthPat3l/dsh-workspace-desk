@@ -20,6 +20,33 @@
   color: var(--dsw-alias-label-secondary);
 }
 
+/* The Host's hero Workspace chip draws a folder of its own and takes no icon
+ * prop. PickerHeroAnchorIcon marks the chip element it receives as this slot's
+ * anchor; the pseudo-element below stands in for the folder with the selected
+ * Workspace's saved or detected icon, whose data URL arrives on the custom
+ * property. Without the marker the chip keeps its ordinary folder glyph. */
+[data-lab-workspace-icon]::before {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--lab-workspace-icon) center / contain no-repeat;
+}
+
+[data-lab-workspace-icon] > svg:first-of-type {
+  display: none;
+}
+
+/* A Workspace's saved or detected icon in the pick list, matching the
+ * sidebar row's 16px box. */
+.workspaceIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  border-radius: 3px;
+}
+
 /* A same-titled Workspace row: the title shrinks first and the path suffix
  * keeps at least the leading segments that tell the rows apart. */
 .disambiguated {

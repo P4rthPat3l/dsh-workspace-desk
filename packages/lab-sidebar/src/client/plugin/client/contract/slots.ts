@@ -521,8 +521,14 @@ export type WorkspaceBrowserProps =
  * supplies the implicit index signature required by the registry.
  */
 export type WorkspacePickerInjected = DirectoryPickingInjected & {
+  /** Detect a workspace icon unless one is already decided. LabSideBar addition. */
+  ensureWorkspaceIcon: (workspacePath: string) => void
   /** Adopt a picked host directory as a real Workspace before targeting a Session. */
   createWorkspace: (input: { path: string }) => Promise<WorkspaceView>
+  hooks: DirectoryPickingInjected['hooks'] & {
+    /** Workspace icon records keyed by workspace path. LabSideBar addition. */
+    workspaceIcons: HostObservable<IconStore>
+  }
 }
 
 /**

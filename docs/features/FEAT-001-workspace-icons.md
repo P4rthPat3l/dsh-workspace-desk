@@ -3,7 +3,7 @@ id: FEAT-001
 title: Workspace icons
 status: active
 implementation_status: shipped_unverified
-version: 2.0.0
+version: 2.1.0
 last_updated: 2026-11-14
 last_verified_commit: "uncommitted working tree, 2026-11-14"
 ---
@@ -12,7 +12,7 @@ last_verified_commit: "uncommitted working tree, 2026-11-14"
 
 ## 1. Snapshot
 
-LabSideBar shows one icon per workspace row in the Harness sidebar. The icon can be detected from files in the project or set by the user through the workspace context menu. This change moves custom icons out of browser localStorage into the Harness profile and raises the accepted source size from 128 KiB to 1 MiB.
+LabSideBar shows one icon per workspace row in the Harness sidebar. The same icon appears on the rows of the workspace pick list and on the conversation hero's workspace chip. The icon can be detected from files in the project or set by the user through the workspace context menu. This change moves custom icons out of browser localStorage into the Harness profile and raises the accepted source size from 128 KiB to 1 MiB.
 
 | Fact | Value |
 | --- | --- |
@@ -50,6 +50,8 @@ Included:
 - A 1 MiB source limit for detected files, uploads, and host storage.
 - Removal of localStorage persistence and its store-versioning code.
 - Tests for the store, the route gate, and the client state machine.
+- The workspace pick list rows render the saved or detected icon.
+- The conversation hero's workspace chip shows the selected workspace's icon. The chip belongs to ui-conversation and takes no icon prop, so the picker slot adorns the chip element it already receives as its anchor.
 
 Excluded:
 
@@ -65,6 +67,7 @@ Excluded:
 3. The client validates the file, sends the data URL to the host, and the row shows the icon immediately.
 4. The host writes the bytes and the index entry. Any later client of the same profile reads the same icon.
 5. "Reset icon" removes the stored file, clears the row icon, and runs detection again.
+6. The same icon appears on the workspace pick list rows and on the conversation hero chip that names the selected workspace.
 
 ## 7. System Context
 
@@ -166,6 +169,7 @@ Wire values:
 | `packages/lab-sidebar/src/client/icon-picker.ts` | Operating system file dialog and data URL read, capped at 1 MiB. | Current |
 | `packages/lab-sidebar/src/client/plugin/client/index.ts` | Icon context menu, connection wiring, and the shared store. | Current |
 | `packages/lab-sidebar/src/client/plugin/client/rows/Rows.tsx` | Renders the icon or the folder fallback. | Current |
+| `packages/lab-sidebar/src/client/plugin/client/WorkspacePicker.tsx` | Pick list row icon; adorns the ui-conversation hero chip through the slot's anchor element. | Current |
 | `packages/lab-sidebar/src/host/store.ts` | Validate icons, write bytes, maintain and evict the index. | Current |
 | `packages/lab-sidebar/src/host/http.ts` | Authenticated `/lab-icons` route and admission gate. | Current |
 | `packages/lab-sidebar/src/host/index.ts` | Compose the store and route at plugin apply. | Current |
@@ -189,6 +193,7 @@ The pre-change implementation at `fc7ed54` kept detected and uploaded icons in l
 - **BR-008**: Reset removes the saved file before clearing the local record. A failed removal leaves the record in place.
 - **BR-009**: Any admitted peer may read icons. Only the owner principal may set or reset them.
 - **BR-010**: The index is the only source of file names. An entry whose file name is not a lowercase SHA-256 plus a known extension is ignored.
+- **BR-011**: The pick list rows and the hero workspace chip show the same record as the sidebar row for that path. A workspace with no saved or detected icon keeps the folder glyph on both surfaces.
 
 ## 15. Acceptance Criteria
 
@@ -202,6 +207,8 @@ The pre-change implementation at `fc7ed54` kept detected and uploaded icons in l
 - **AC-008**: The store evicts the oldest entries beyond the count and byte caps.
 - **AC-009**: A tampered index entry with a path-like file name is ignored.
 - **AC-010**: A failed host load falls back to detection and caches no miss when detection finds nothing.
+- **AC-011**: Every workspace row in the hero pick list shows the saved or detected icon, and the folder glyph when the workspace has neither.
+- **AC-012**: The hero chip shows the selected workspace's icon and replaces it when the selection changes. A workspace without an icon leaves the chip's folder glyph in place.
 
 ## 17. Security and Privacy
 
@@ -239,6 +246,7 @@ New and updated tests:
 | AC-010 | `ensure` with a throwing load falls back to detection and caches no miss. |
 | AC-001, AC-003, AC-005, AC-007 | `tests/icon-route.test.mjs` drives the route over HTTP. |
 | AC-001, AC-003, AC-005 to AC-009 | `tests/icon-store.test.mjs` covers the store and the gate. |
+| AC-011, AC-012 | Manual: open the hero picker on the desktop window and compare its rows and chip with the sidebar rows; set an icon, reopen the picker, and reset it. No automated DOM test exists for the slot occupants. |
 
 Manual verification after a restart:
 
@@ -281,10 +289,12 @@ Phases 1 and 2 are implemented in the working tree. Typecheck, the test suite, a
 | Detection reads up to 1 MiB plus one byte per candidate file. | More bytes over the workspace files RPC. | The workspace files cap is 2 MiB, so the window is valid. Reads stop at the first usable icon. |
 | The working tree is dirty at implementation time. | `last_verified_commit` cannot name a commit. | Verification names the working tree date until the work is committed. |
 | An old localStorage icon set is not migrated. | A user must set the icon again after this change. | The old record is ignored, not deleted. The legacy data can be migrated later if needed. |
+| The hero chip belongs to ui-conversation. The adornment relies on the element the slot receives as its anchor: a button whose first svg child is the folder glyph. | A host markup change stops the chip icon; the pick list keeps working. | The attribute and pseudo-element apply only while an icon exists, so without the shim the chip keeps its folder. Recheck after every Harness upgrade. |
 
 ## 30. Changelog
 
 | Date | Version | Change |
 | --- | --- | --- |
+| 2026-11-14 | 2.1.0 | Workspace icons on the pick list rows and on the conversation hero chip. Typecheck, tests, and bundle pass; live verification pending. |
 | 2026-11-14 | 2.0.0 | Host-backed custom icons, a 1 MiB source limit, and removal of localStorage persistence. Tests pass; live verification pending. |
 | 2026-11-13 | 1.0.0 | Detected workspace icons and localStorage uploads, commit `fc7ed54`. |

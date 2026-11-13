@@ -19,6 +19,7 @@ import type {
 import { workspaceDisplayTitle } from '@deepseek-ai/dsh-api-workspace-controller/default-workspace'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
 import type { DirectoryFlowOwnerProps, WorkspacePickerProps } from './contract/slots.ts'
+import { iconFor } from '../../icons.ts'
 import { distinguishingPathSuffixes } from './path-suffix.ts'
 import css from './WorkspacePicker.module.css'
 
@@ -52,6 +53,9 @@ export interface WorkspacePickFlowProps {
   side?: 'bottom' | 'top' | 'right'
   /** Currently active workspace (trailing check in the picker list). */
   selectedId?: WorkspaceId | undefined
+  /** Workspace icon share: the hero picker lists workspaces, the add-only sidebar flow does not. */
+  useWorkspaceIcons?: WorkspacePickerProps['useWorkspaceIcons'] | undefined
+  ensureWorkspaceIcon?: WorkspacePickerProps['ensureWorkspaceIcon'] | undefined
 }
 
 /**
@@ -73,6 +77,8 @@ export function WorkspacePickFlow({
   onBusyChange,
   side = 'bottom',
   selectedId,
+  useWorkspaceIcons,
+  ensureWorkspaceIcon,
 }: WorkspacePickFlowProps) {
   const workspaceSnapshot = useWorkspaces(state => state)
   const workspaces = workspaceSnapshot.items
@@ -123,6 +129,9 @@ export function WorkspacePickFlow({
     const suffixes = distinguishingPathSuffixes(rows)
     return rows.map(row => ({ ...row, suffix: suffixes.get(row.id) }))
   }, [pinAdd, workspaces, defaultWorkspaceName])
+  const rowIcon = (path: string): ReactNode => useWorkspaceIcons === undefined || ensureWorkspaceIcon === undefined
+    ? <IconFolderCloseRegular size={16} />
+    : <PickerWorkspaceIcon path={path} useWorkspaceIcons={useWorkspaceIcons} ensureWorkspaceIcon={ensureWorkspaceIcon} />
   const items: MenuEntry[] = pinAdd
     ? listed.map(({ id, title, path, suffix }) => ({
       id,
@@ -137,7 +146,7 @@ export function WorkspacePickFlow({
             <span className={css.pathSuffix}>{suffix}</span>
           </span>
         ),
-      icon: <IconFolderCloseRegular size={16} />,
+      icon: rowIcon(path),
       disabled: flowBusy,
     }))
     : addEntries
@@ -245,6 +254,56 @@ export function WorkspacePickFlow({
   )
 }
 
+/** One picker row's leading icon: the Workspace's saved or detected icon, or the folder glyph. */
+function PickerWorkspaceIcon({ path, useWorkspaceIcons, ensureWorkspaceIcon }: {
+  path: string
+  useWorkspaceIcons: NonNullable<WorkspacePickFlowProps['useWorkspaceIcons']>
+  ensureWorkspaceIcon: NonNullable<WorkspacePickFlowProps['ensureWorkspaceIcon']>
+}) {
+  const iconUrl = useWorkspaceIcons(store => iconFor(store, path)?.dataUrl)
+  useEffect(() => { ensureWorkspaceIcon(path) }, [path, ensureWorkspaceIcon])
+  return iconUrl === undefined
+    ? <IconFolderCloseRegular size={16} />
+    : <img className={css.workspaceIcon} src={iconUrl} alt="" draggable={false} />
+}
+
+/**
+ * The Host's hero Workspace chip draws a folder glyph of its own. The chip
+ * belongs to ui-conversation and takes no icon prop, but the slot is handed
+ * the chip element as `anchorRef`, so the selected Workspace's icon rides
+ * that anchor: a data attribute turns on the stylesheet rule and a custom
+ * property carries the data URL. Nothing renders here.
+ */
+function PickerHeroAnchorIcon({ anchorRef, selectedId, useWorkspaces, useWorkspaceIcons, ensureWorkspaceIcon }: {
+  anchorRef: RefObject<HTMLElement | null> | undefined
+  selectedId: WorkspaceId | undefined
+  useWorkspaces: WorkspacePickerProps['useWorkspaces']
+  useWorkspaceIcons: NonNullable<WorkspacePickFlowProps['useWorkspaceIcons']>
+  ensureWorkspaceIcon: NonNullable<WorkspacePickFlowProps['ensureWorkspaceIcon']>
+}) {
+  const path = useWorkspaces(state => state.items.find(row => row.workspaceId === selectedId)?.path)
+  const iconUrl = useWorkspaceIcons(store => path === undefined ? undefined : iconFor(store, path)?.dataUrl)
+  useEffect(() => {
+    if (path !== undefined) ensureWorkspaceIcon(path)
+  }, [path, ensureWorkspaceIcon])
+  useEffect(() => {
+    const anchor = anchorRef?.current
+    if (anchor === null || anchor === undefined) return
+    if (iconUrl === undefined) {
+      anchor.removeAttribute('data-lab-workspace-icon')
+      anchor.style.removeProperty('--lab-workspace-icon')
+      return
+    }
+    anchor.setAttribute('data-lab-workspace-icon', '')
+    anchor.style.setProperty('--lab-workspace-icon', `url("${iconUrl}")`)
+    return () => {
+      anchor.removeAttribute('data-lab-workspace-icon')
+      anchor.style.removeProperty('--lab-workspace-icon')
+    }
+  }, [anchorRef, iconUrl])
+  return null
+}
+
 /**
  * The conversation empty-state registration: adapts the owner share to the
  * core flow (all state and semantics live in the flow / the owner).
@@ -260,21 +319,34 @@ export function WorkspacePicker({
   onClose,
   createWorkspace,
   useDirectoryFlow,
+  useWorkspaceIcons,
+  ensureWorkspaceIcon,
   renderSlot,
   t,
 }: WorkspacePickerProps) {
   return (
-    <WorkspacePickFlow
-      t={t}
-      open={open}
-      anchorRef={anchorRef}
-      useWorkspaces={useWorkspaces}
-      createWorkspace={createWorkspace}
-      useDirectoryFlow={useDirectoryFlow}
-      renderDirectoryFlow={owner => renderSlot('conversation.hero.workspace.directoryFlow', owner)}
-      selectedId={selectedId}
-      onPick={onPick}
-      onClose={onClose}
-    />
+    <>
+      <PickerHeroAnchorIcon
+        anchorRef={anchorRef}
+        selectedId={selectedId}
+        useWorkspaces={useWorkspaces}
+        useWorkspaceIcons={useWorkspaceIcons}
+        ensureWorkspaceIcon={ensureWorkspaceIcon}
+      />
+      <WorkspacePickFlow
+        t={t}
+        open={open}
+        anchorRef={anchorRef}
+        useWorkspaces={useWorkspaces}
+        createWorkspace={createWorkspace}
+        useDirectoryFlow={useDirectoryFlow}
+        renderDirectoryFlow={owner => renderSlot('conversation.hero.workspace.directoryFlow', owner)}
+        selectedId={selectedId}
+        onPick={onPick}
+        onClose={onClose}
+        useWorkspaceIcons={useWorkspaceIcons}
+        ensureWorkspaceIcon={ensureWorkspaceIcon}
+      />
+    </>
   )
 }
