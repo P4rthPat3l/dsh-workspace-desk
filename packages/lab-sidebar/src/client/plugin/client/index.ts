@@ -130,13 +130,17 @@ export function apply(ctx: Context): void {
   )
   // LabSideBar: workspace icons. A session's file scope reads absolute paths,
   // so a workspace without sessions borrows any session to read its files.
+  const iconStorage = (): Storage | undefined => {
+    try { return globalThis.localStorage } catch { return undefined }
+  }
   const workspaceIcons = createWorkspaceIcons({
-    storage: globalThis.localStorage,
+    storage: iconStorage(),
     read: async (sessionId, absolutePath) => {
       const result = await ctx.remote.workspaceFiles.readBytes(
         sessionId, absolutePath, { range: { length: MAX_ICON_BYTES + 1 } },
       )
-      return result.ok ? result.value.data : undefined
+      if (result.ok) return result.value.data
+      throw result.error
     },
     sessionFor: (path) => {
       const own = workspaces.list.getSnapshot().items.find(row => row.path === path)?.sessionIds[0]

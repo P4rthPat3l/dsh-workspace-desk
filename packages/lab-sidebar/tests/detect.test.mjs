@@ -8,6 +8,7 @@ const ROOT = '/w/app';
 const bytes = text => new TextEncoder().encode(text);
 const SVG = bytes('<svg xmlns="http://www.w3.org/2000/svg"/>');
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
+const ICO = new Uint8Array([0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x10, 0x10]);
 
 /** Fake reader over a map of absolute paths; records every path asked for. */
 function fakeFiles(files) {
@@ -54,7 +55,7 @@ test('AC-004: a workspace with no icon files detects nothing', async () => {
 test('a file over the icon limit is skipped', async () => {
   const { read } = fakeFiles({
     [`${ROOT}/favicon.png`]: new Uint8Array(MAX_ICON_BYTES + 1),
-    [`${ROOT}/favicon.ico`]: PNG,
+    [`${ROOT}/favicon.ico`]: ICO,
   });
   assert.equal((await detectIcon(ROOT, read))?.source, 'favicon.ico');
 });
@@ -132,4 +133,17 @@ test('a workspace with no readable session waits without storing a record', asyn
   const icons = createWorkspaceIcons({ storage: memoryStorage(), read: async () => undefined, sessionFor: () => undefined });
   await icons.ensure(ROOT);
   assert.equal(icons.getSnapshot().entries[ROOT], undefined);
+});
+
+test('AC-003: a file whose bytes are not the image its extension claims is skipped', async () => {
+  const { read } = fakeFiles({ [`${ROOT}/favicon.png`]: bytes('this is text, not a png') });
+  assert.equal(await detectIcon(ROOT, read), undefined);
+});
+
+test('AC-007: declared icons are capped so one HTML file cannot fan out reads', async () => {
+  const links = Array.from({ length: 40 }, (_, index) => `<link rel="icon" href="/i${index}.png">`).join('');
+  const { read, asked } = fakeFiles({ [`${ROOT}/index.html`]: bytes(`<head>${links}</head>`) });
+  await detectIcon(ROOT, read);
+  const declared = asked.filter(path => /\/i\d+\.png$/u.test(path));
+  assert.equal(declared.length, 16);
 });

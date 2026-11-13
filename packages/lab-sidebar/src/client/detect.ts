@@ -25,6 +25,9 @@ const MIME: Readonly<Record<string, string>> = {
 const HTML_ENTRIES = ['index.html', 'public/index.html', 'src/index.html'];
 
 /** Conventional icon locations, tried after the declared ones. */
+/** Declared icons are capped so one hand-written HTML file cannot fan out reads. */
+const MAX_DECLARED_ICONS = 16;
+
 export const CONVENTIONAL_ICONS = [
   'favicon.svg', 'favicon.png', 'favicon.ico',
   'public/favicon.svg', 'public/favicon.png', 'public/favicon.ico',
@@ -66,7 +69,7 @@ async function declaredIcons(root: string, read: ReadFile): Promise<string[]> {
     const icon = packageIcon(manifest);
     if (icon !== undefined) found.push(...resolveHref(icon, ''));
   }
-  return found;
+  return found.slice(0, MAX_DECLARED_ICONS);
 }
 
 /** `href` values of icon links, in document order. */
@@ -122,13 +125,28 @@ function normalize(path: string): string | undefined {
   return parts.length === 0 ? undefined : parts.join('/');
 }
 
+/** Content check: an extension must not put a broken image in a row. */
+function looksLikeImage(mime: string, bytes: Uint8Array): boolean {
+  const at = (index: number): number => bytes[index] ?? -1;
+  const starts = (prefix: readonly number[]): boolean => prefix.every((value, index) => at(index) === value);
+  switch (mime) {
+    case 'image/svg+xml': return new TextDecoder().decode(bytes).includes('<svg');
+    case 'image/png': return starts([0x89, 0x50, 0x4e, 0x47]);
+    case 'image/jpeg': return starts([0xff, 0xd8, 0xff]);
+    case 'image/gif': return starts([0x47, 0x49, 0x46, 0x38]);
+    case 'image/webp': return starts([0x52, 0x49, 0x46, 0x46]) && at(8) === 0x57 && at(9) === 0x45 && at(10) === 0x42 && at(11) === 0x50;
+    case 'image/x-icon': return starts([0x00, 0x00, 0x01, 0x00]);
+    default: return false;
+  }
+}
+
 async function iconAt(root: string, relative: string, read: ReadFile): Promise<DetectedIcon | undefined> {
   const extension = relative.slice(relative.lastIndexOf('.') + 1).toLowerCase();
   const mime = MIME[extension];
   if (mime === undefined) return undefined;
   const bytes = await read(join(root, relative));
   if (bytes === undefined || bytes.length === 0 || bytes.length > MAX_ICON_BYTES) return undefined;
-  if (mime === 'image/svg+xml' && !new TextDecoder().decode(bytes).includes('<svg')) return undefined;
+  if (!looksLikeImage(mime, bytes)) return undefined;
   return { dataUrl: `data:${mime};base64,${base64(bytes)}`, source: relative };
 }
 

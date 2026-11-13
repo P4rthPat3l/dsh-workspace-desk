@@ -1,14 +1,21 @@
 /** Workspace icon state: the persisted store, detection runs, and uploads.
  * The Harness calls arrive as functions, so the tests run it in plain Node. */
 import type { SessionId } from '@deepseek-ai/dsh-session/types';
-import { detectIcon } from './detect.ts';
+import { detectIcon, type DetectedIcon } from './detect.ts';
 import {
   clearIcon, iconFor, readIconStore, setDetectedIcon, setNegativeIcon, setUploadedIcon, writeIconStore,
   type IconStore, type StorageLike,
 } from './icons.ts';
 
-/** How long a workspace without an icon waits before detection runs again. */
-export const NEGATIVE_RETRY_MS = 24 * 60 * 60 * 1000;
+/** The Host reports a missing file with this Remote code; any other failure is real. */
+export function isMissingFileFailure(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null || !('code' in error)) return false;
+  return error.code === 'workspace-file/not-found';
+}
+
+/** How long a workspace without an icon waits before detection runs again. A
+ * favicon added later waits at most this long, or until Reset icon. */
+export const NEGATIVE_RETRY_MS = 30 * 60 * 1000;
 
 /** Detection runs at once; the sidebar mounts every workspace row together. */
 const CONCURRENCY = 2;
@@ -65,7 +72,27 @@ export function createWorkspaceIcons(deps: WorkspaceIconDeps): WorkspaceIcons {
     if (sessionId === undefined) return;
     await acquire();
     try {
-      const icon = await detectIcon(path, file => deps.read(sessionId, file));
+      let failed = false;
+      const read = async (file: string): Promise<Uint8Array | undefined> => {
+        try {
+          return await deps.read(sessionId, file);
+        } catch (reason) {
+          // A missing file is an ordinary answer. Anything else keeps detection
+          // going but must not become a cached miss.
+          if (!isMissingFileFailure(reason)) {
+            failed = true;
+            console.warn('[lab-sidebar] workspace icon read failed:', file, reason);
+          }
+          return undefined;
+        }
+      };
+      const icon: DetectedIcon | undefined = await detectIcon(path, read);
+      // A failure this run means the answer is unknown, so nothing is recorded
+      // and the next mount tries again.
+      if (icon === undefined && failed) return;
+      // An upload or a reset during the reads outranks this result.
+      const current = iconFor(store, path, now());
+      if (current !== undefined && current.kind === 'uploaded') return;
       const stamp = new Date(now()).toISOString();
       commit(icon === undefined
         ? setNegativeIcon(store, path, new Date(now() + NEGATIVE_RETRY_MS).toISOString(), stamp)

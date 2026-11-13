@@ -165,7 +165,8 @@
 @media (hover: hover) {
   .projectRow:hover .chevron { display: inline-flex; }
 
-  .projectRow:hover .folder { display: none; }
+  /* A workspace with its own icon keeps it on hover; only the folder glyph swaps. */
+  .projectRow:hover .folder:not(:has(img)) { display: none; }
 }
 
 /* Expand arrow (filled triangle): points right closed, rotates to point down open. */
