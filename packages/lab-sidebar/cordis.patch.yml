@@ -1,0 +1,7 @@
+# Replace the shipped workspace plugin with the full LabSideBar copy. The
+# disable lives here, so uninstalling this bundle restores the shipped row.
+- id: ui-workspace
+  disabled: true
+- insert:
+    - id: lab-sidebar
+      name: dsh-lab-sidebar
