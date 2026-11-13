@@ -32,10 +32,10 @@ import { workspaceDisplayTitle } from '@deepseek-ai/dsh-api-workspace-controller
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
 import type { PropsRenderSlots } from '@deepseek-ai/dsh-client-ui-slots'
 import type { WorkspaceBrowserProps } from '../contract/slots.ts'
-import type { ArchivedFilter, GroupNode, SessionNode, SessionOrderBy, SessionRowState } from '../tree.ts'
+import type { ArchivedFilter, GroupNode, SessionNode, SessionOrderBy, SessionRowState, WorkspaceActivity } from '../tree.ts'
 import {
   deriveFlat, deriveGroups, deriveSearchResults, orderByRecency, owningGroupKey, owningParentFolder,
-  pinCurrentBlank, reconcileManualOrder, sessionMemberIds, UNGROUPED_KEY,
+  pinCurrentBlank, reconcileManualOrder, sessionMemberIds, subtreeActivity, UNGROUPED_KEY,
 } from '../tree.ts'
 import { ProjectRowItem, SearchResultItem, SessionNodeItem } from './Rows.tsx'
 import { FLAT_SESSION_ORDER_KEY, type SessionGroupBy } from '../stores.ts'
@@ -103,6 +103,11 @@ function raiseWatermarks(
     if (watermark > (raised[key] ?? SESSION_WATERMARK_BASE)) raised = { ...raised, [key]: watermark }
   }
   return raised
+}
+
+/** Sessions counted in any activity bucket. */
+function activityTotal(activity: WorkspaceActivity): number {
+  return activity.attention + activity.running + activity.completed
 }
 
 /** Keep controlled input and RPC payload inside the session.search wire contract. */
@@ -481,6 +486,8 @@ function SessionTree({
     const sessionsExpanded = visible.hiddenCount === 0
     rowKeys.push(`workspace:${group.key}`)
     const childRows = group.expanded ? children.map(child => renderGroup(child, depth + 1)) : []
+    // Unfolded children show their own dots; a folded parent reports them.
+    const activity = group.expanded ? group.activity : subtreeActivity(group, childrenByParent)
     const sessions = visible.rows
     for (const node of sessions) rowKeys.push(`session:${node.id}`)
     if (collapsed.hiddenCount > 0) rowKeys.push(`overflow:${group.key}`)
@@ -556,6 +563,8 @@ function SessionTree({
         <ProjectRowItem
           newShortcut={shortcuts.find(row => row.id === 'session.new')}
           group={group}
+          activity={activity}
+          includesNested={activityTotal(activity) > activityTotal(group.activity)}
           openWorkspaceMenu={openWorkspaceMenu} useContextMenu={useContextMenu} useContextMenuTarget={useContextMenuTarget}
           useWorkspaceIcons={useWorkspaceIcons} ensureWorkspaceIcon={ensureWorkspaceIcon}
           useRemoteAccess={useRemoteAccess}

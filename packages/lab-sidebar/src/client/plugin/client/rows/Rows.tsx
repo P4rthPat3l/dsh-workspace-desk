@@ -25,7 +25,7 @@ import type { StateDotState } from '@deepseek-ai/dsh-client-ui-primitives'
 import { abbreviateHomePath } from '@deepseek-ai/dsh-util-workspace-path'
 import type { WorkspaceId } from '@deepseek-ai/dsh-api-workspace-controller/client'
 import type { WorkspaceBrowserProps } from '../contract/slots.ts'
-import type { GroupNode, SearchResultNode, SessionNode } from '../tree.ts'
+import type { GroupNode, SearchResultNode, SessionNode, WorkspaceActivity } from '../tree.ts'
 import { iconFor } from '../../../icons.ts'
 import css from './Rows.module.css'
 
@@ -174,11 +174,31 @@ function createdLabel(createdAt: number, t: RowTranslate): string {
   return t('hover.created', { time: `${date} ${pad2(d.getHours())}:${pad2(d.getMinutes())}` })
 }
 
-/** Hover-card body: workspace title, display directory path, absolute creation time. */
-function WorkspaceHoverContent({ label, cwd, createdAt, t }: {
+/** One non-zero activity bucket, most urgent first. */
+interface ActivityLine {
+  state: StateDotState
+  label: string
+}
+
+/**
+ * Workspace activity lines in dot priority: waiting for the user, running,
+ * finished but not opened. The first line decides the row dot.
+ */
+function activityLines(activity: WorkspaceActivity, t: RowTranslate): ActivityLine[] {
+  const lines: ActivityLine[] = []
+  if (activity.attention > 0) lines.push({ state: 'warning', label: t('activity.attention', { n: activity.attention }) })
+  if (activity.running > 0) lines.push({ state: 'ongoing', label: t('activity.running', { n: activity.running }) })
+  if (activity.completed > 0) lines.push({ state: 'done', label: t('activity.completed', { n: activity.completed }) })
+  return lines
+}
+
+/** Hover-card body: workspace title, display directory path, absolute creation time, activity counts. */
+function WorkspaceHoverContent({ label, cwd, createdAt, activity, includesNested, t }: {
   label: string
   cwd: string | undefined
   createdAt: number
+  activity: readonly ActivityLine[]
+  includesNested: boolean
   t: RowTranslate
 }) {
   return (
@@ -186,6 +206,13 @@ function WorkspaceHoverContent({ label, cwd, createdAt, t }: {
       <div className={css.hoverTitle}>{label}</div>
       <div className={css.hoverPath}>{cwd}</div>
       <div className={css.hoverTime}>{createdLabel(createdAt, t)}</div>
+      {activity.map(line => (
+        <div className={css.hoverStatus} key={line.state}>
+          <StateDot state={line.state} />
+          <span>{line.label}</span>
+        </div>
+      ))}
+      {includesNested && <div className={css.hoverStatus}>{t('activity.nested')}</div>}
     </div>
   )
 }
@@ -222,6 +249,10 @@ function rowHalf(e: { clientY: number; currentTarget: HTMLElement }): 'before' |
 /** Owner props of one Workspace header row; the access Hooks are the browser root's own standard seats. */
 type ProjectRowItemProps = {
   group: GroupNode
+  /** Counts behind the row dot: the group's own, plus nested groups while it is folded. */
+  activity: WorkspaceActivity
+  /** Nested groups contributed to `activity`; the hover card says so. */
+  includesNested: boolean
   newShortcut?: ShortcutCatalogEntry | undefined
   containsCurrentDescendant?: boolean
   onToggle: () => void
@@ -241,13 +272,15 @@ interface ProjectRowAccess {
 }
 
 /**
- * Project (workspace) header row: folder + title;
- * hover reveals the chevron and create button, and dwelling on a real
+ * Project (workspace) header row: folder + title + activity dot;
+ * hover reveals the chevron and create button in place of the dot, and dwelling on a real
  * Workspace shows its hover card (the ungrouped bucket has none).
  * `containsCurrent` arrives on the node (derivation fact, no renderer scan).
  * Create and drag follow the Workspace access snapshot. Menu providers own
  * their access checks; the ungrouped bucket has no Workspace menu.
  * @param props.group - derived group node.
+ * @param props.activity - counts behind the row dot and the hover-card status lines.
+ * @param props.includesNested - nested groups contributed to the counts.
  * @param props.containsCurrentDescendant - highlight an ancestor even when its subtree is collapsed.
  * @param props.onToggle - expand/collapse the group.
  * @param props.onCreate - start a frontend Session inside this Workspace.
@@ -280,7 +313,7 @@ function WorkspaceProjectRow({ workspaceId, ...props }: ProjectRowItemProps & { 
 }
 
 function ProjectRow({
-  group, containsCurrentDescendant = false, onToggle, onCreate, drag: offeredDrag, home, newShortcut, t, access,
+  group, activity, includesNested, containsCurrentDescendant = false, onToggle, onCreate, drag: offeredDrag, home, newShortcut, t, access,
   openWorkspaceMenu, useContextMenuTarget, useContextMenu, useWorkspaceIcons, ensureWorkspaceIcon,
 }: ProjectRowItemProps & { access: ProjectRowAccess }) {
   const { getTriggerProps } = useContextMenu()
@@ -293,6 +326,7 @@ function ProjectRow({
   const dragPreview = useRowDragPreview(css.dragPreview as string, DRAG_PREVIEW_PROPERTIES)
   const workspaceMenuTarget = row.workspaceId !== undefined && row.cwd !== undefined
     ? { workspaceId: row.workspaceId, path: row.cwd } : undefined
+  const activityRows = activityLines(activity, t)
   const workspacePath = row.cwd
   const iconUrl = useWorkspaceIcons(store => workspacePath === undefined ? undefined : iconFor(store, workspacePath)?.dataUrl)
   useEffect(() => {
@@ -328,6 +362,12 @@ function ProjectRow({
       <span className={css.projectText}>
         <span className={css.title}>{label}</span>
       </span>
+      {activityRows[0] !== undefined && (
+        <span className={css.activity}>
+          <StateDot state={activityRows[0].state} />
+          <span className={css.visuallyHidden}>{activityRows.map(line => line.label).join(', ')}</span>
+        </span>
+      )}
       <span className={css.rowActions}>
         {workspaceMenuTarget !== undefined && (
           <button type="button" className={css.iconButton} data-context-menu-trigger
@@ -363,6 +403,8 @@ function ProjectRow({
         label={row.label}
         cwd={row.cwd === undefined ? undefined : abbreviateHomePath(row.cwd, home)}
         createdAt={row.createdAt}
+        activity={activityRows}
+        includesNested={includesNested}
         t={t}
       />}
       openDelayMs={800}

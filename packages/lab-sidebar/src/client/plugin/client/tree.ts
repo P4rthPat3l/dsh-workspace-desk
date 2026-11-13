@@ -3,8 +3,9 @@
  * Session order. Unassigned Sessions trail under Ungrouped; only the selected
  * blank Session remains visible.
  */
-import {
-  type SessionListState, type SessionSearchResultItem, type SessionSummary,
+// Type-only: the client entry touches `window` on load, which breaks the node tests of this module.
+import type {
+  SessionListState, SessionSearchResultItem, SessionSummary,
 } from '@deepseek-ai/dsh-api-session-controller/client'
 import type { WorkspaceId, WorkspaceView } from '@deepseek-ai/dsh-api-workspace-controller/client'
 import type {
@@ -63,6 +64,19 @@ export interface SessionNode {
   cwd?: string
 }
 
+/**
+ * Per-bucket Session counts behind a Workspace row's status dot. Each counted
+ * Session lands in exactly one bucket, the most urgent that applies.
+ */
+export interface WorkspaceActivity {
+  /** Sessions with a pending approval, plan review, or question. */
+  attention: number
+  /** Sessions running themselves or through a running subagent. */
+  running: number
+  /** Sessions whose finished run has not been opened yet. */
+  completed: number
+}
+
 /** Session order selected by the Workspace browser. */
 export type SessionOrderBy = 'manual' | 'updated'
 
@@ -83,6 +97,8 @@ export interface GroupNode {
   containsCurrent: boolean
   /** Visible session rows (empty while the group is folded). */
   sessions: readonly SessionNode[]
+  /** Status counts over every visible member, folded or not and including rows below Show more. */
+  activity: WorkspaceActivity
 }
 
 /** One flat search row combining list metadata with an optional content match. */
@@ -410,6 +426,50 @@ function sessionNode(
 }
 
 /**
+ * Count one group's members by their most urgent status. Archived rows and the
+ * blank New Session row never count.
+ */
+function groupActivity(
+  members: readonly SessionSummary[],
+  list: SessionListState,
+  statuses: SessionStatuses,
+  archived: ReadonlySet<SessionId>,
+): WorkspaceActivity {
+  const activity: WorkspaceActivity = { attention: 0, running: 0, completed: 0 }
+  for (const member of members) {
+    if (member.blank || archived.has(member.id)) continue
+    const status = statuses.get(member.id)
+    if (visiblePendingKind(status?.pendingInteraction?.kind) !== undefined) activity.attention += 1
+    else if ((status?.running ?? member.running) || runningChildCount(list, member.id, statuses) > 0) activity.running += 1
+    else if (status?.completionUnread === true) activity.completed += 1
+  }
+  return activity
+}
+
+/**
+ * Sum a group's activity with every nested group below it. A folded parent
+ * hides its nested Workspace rows, so its own dot must report them.
+ * @param group - the group whose subtree is summed.
+ * @param childrenOf - rendered child groups keyed by parent group key.
+ * @returns the group's counts plus those of all its descendants.
+ */
+export function subtreeActivity(
+  group: GroupNode,
+  childrenOf: ReadonlyMap<string | undefined, readonly GroupNode[]>,
+): WorkspaceActivity {
+  let total = group.activity
+  for (const child of childrenOf.get(group.key) ?? []) {
+    const nested = subtreeActivity(child, childrenOf)
+    total = {
+      attention: total.attention + nested.attention,
+      running: total.running + nested.running,
+      completed: total.completed + nested.completed,
+    }
+  }
+  return total
+}
+
+/**
  * Derive the workspace browser groups with every session as a top-level row.
  *
  * Every group shows, except that the archived-only filter drops groups
@@ -455,6 +515,7 @@ export function deriveGroups(
         ? sectionMembers(g.sessions, pinned, archived)
           .map(session => sessionNode(session, list, statuses, pinned, archived))
         : [],
+      activity: groupActivity(g.sessions, list, statuses, archived),
     })
   }
   return groups

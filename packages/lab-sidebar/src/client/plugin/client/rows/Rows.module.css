@@ -119,6 +119,24 @@
   height: 20px;
 }
 
+/* Workspace activity dot: trailing cell that yields to the hover actions,
+   the way a session row's time yields to its actions. */
+.activity {
+  flex: none;
+  display: inline-flex;
+  width: 16px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (hover: hover) {
+  .projectRow:hover .activity,
+  .projectRow.menuOpen .activity {
+    display: none;
+  }
+}
+
 /* Session titles share the workspace icon slot and compact label gap. */
 .sessionRow {
   height: 32px;
