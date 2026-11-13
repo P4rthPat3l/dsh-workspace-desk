@@ -1,4 +1,4 @@
-globalThis.__LAB_CSS__ = "\n.WorkspacePicker_modalAction {\n  min-width: 72px;\n}\n\n.WorkspacePicker_modalError,\n.WorkspacePicker_menuStatus {\n  margin-top: 8px;\n  font-size: 12px;\n  line-height: 18px;\n}\n\n.WorkspacePicker_modalError {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspacePicker_menuStatus,\n.WorkspacePicker_pathSuffix {\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspacePicker_disambiguated {\n  display: flex;\n  gap: 4px;\n  min-width: 0;\n}\n\n.WorkspacePicker_title,\n.WorkspacePicker_pathSuffix {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.WorkspacePicker_pathSuffix {\n  flex: none;\n  max-width: 75%;\n}\n\n.WorkspaceBrowser_root {\n  --dsh-session-list-edge-inset: var(--dsh-sidebar-inline-padding);\n  --dsh-session-list-scrollbar-width: 5px;\n  --dsh-session-list-scrollbar-offset: 2px;\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  padding-right: var(--dsh-session-list-edge-inset);\n}\n\n.WorkspaceBrowser_root.WorkspaceBrowser_rail {\n  padding-right: 0;\n}\n\n.WorkspaceBrowser_iconButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 28px;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspaceBrowser_iconButton:focus-visible,\n.WorkspaceBrowser_searchButton:focus-visible,\n.WorkspaceBrowser_clearButton:focus-visible {\n  outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n  outline-offset: -2px;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_iconButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_viewOptionsMenu {\n  min-width: 200px;\n}\n\n\n.WorkspaceBrowser_sectionHeader {\n  flex: none;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 4px;\n  height: 36px;\n  padding-left: var(--dsh-sidebar-row-padding);\n  margin-bottom: 4px;\n  box-sizing: border-box;\n  border-radius: var(--dsw-radius-md);\n  overflow: hidden;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader {\n  margin-top: 2px;\n  margin-right: -4px;\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader.WorkspaceBrowser_searchSpacingMotion {\n  transition:\n    margin-right 180ms var(--ds-ease-in-out),\n    padding-inline 180ms var(--ds-ease-in-out),\n    gap 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader:not(:has(.WorkspaceBrowser_searchExpanded)) {\n  padding-right: 1px;\n}\n\n.WorkspaceBrowser_sectionLabel {\n  position: relative;\n  left: -1px;\n  flex: none;\n  max-width: 45%;\n  min-width: 0;\n  overflow: hidden;\n  white-space: nowrap;\n  line-height: 20px;\n  opacity: 1;\n  visibility: visible;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    margin-right 180ms var(--ds-ease-in-out),\n    opacity 120ms var(--ds-ease-in-out),\n    transform 180ms var(--ds-ease-in-out),\n    visibility 0s linear;\n}\n\n.WorkspaceBrowser_sectionLabelHidden {\n  max-width: 0;\n  margin-right: -4px;\n  opacity: 0;\n  transform: translateX(-4px);\n  visibility: hidden;\n  transition-delay: 0s, 0s, 0s, 0s, 180ms;\n}\n\n.WorkspaceBrowser_searchSlot {\n  flex: 1;\n  max-width: 28px;\n  min-width: 0;\n  display: flex;\n  align-items: center;\n  margin-left: auto;\n  padding-left: 0;\n  box-sizing: border-box;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    padding-left 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_searchSlotExpanded {\n  max-width: 100%;\n  padding-left: 0;\n}\n\n.WorkspaceBrowser_headerActions {\n  flex: none;\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  max-width: 60px;\n  opacity: 1;\n  overflow: hidden;\n  visibility: visible;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    opacity 120ms var(--ds-ease-in-out),\n    transform 180ms var(--ds-ease-in-out),\n    visibility 0s linear;\n}\n\n.WorkspaceBrowser_headerActionsHidden {\n  max-width: 0;\n  opacity: 0;\n  transform: translateX(4px);\n  visibility: hidden;\n  pointer-events: none;\n  transition-delay: 0s, 0s, 0s, 180ms;\n}\n\n\n.WorkspaceBrowser_search {\n  flex: none;\n  display: flex;\n  align-items: center;\n  gap: 0;\n  width: 100%;\n  height: 28px;\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  background: transparent;\n  cursor: text;\n  color: var(--dsw-alias-label-secondary);\n  overflow: hidden;\n  transition:\n    width 180ms var(--ds-ease-in-out),\n    padding 180ms var(--ds-ease-in-out),\n    border-color 180ms var(--ds-ease-in-out),\n    background-color 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader:has(.WorkspaceBrowser_searchExpanded) {\n  margin-right: 0;\n  padding-inline: calc(var(--dsh-sidebar-paint-inset) + 1px);\n  gap: 0;\n}\n\n.WorkspaceBrowser_sectionHeader:has(.WorkspaceBrowser_searchExpanded) .WorkspaceBrowser_sectionLabelHidden {\n  margin-right: 0;\n}\n\n.WorkspaceBrowser_searchExpanded {\n  width: 100%;\n  height: 32px;\n  margin-inline: 0;\n  padding: 0 4px 0 0;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-md);\n  background: transparent;\n  color: var(--dsw-alias-label-caption);\n}\n\n.WorkspaceBrowser_searchButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 28px;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: inherit;\n}\n\n.WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchButton {\n  width: 28px;\n  height: 32px;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_searchButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n\n  .WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchButton:hover {\n    background: transparent;\n  }\n}\n\n.WorkspaceBrowser_searchInput {\n  flex: 1;\n  width: 0;\n  min-width: 0;\n  border: none;\n  outline: none;\n  background: transparent;\n  opacity: 0;\n  pointer-events: none;\n  font-size: 13px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-primary);\n  transition: opacity 120ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchInput {\n  margin-left: -2px;\n  opacity: 1;\n  pointer-events: auto;\n}\n\n.WorkspaceBrowser_searchInput::placeholder {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_clearButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 24px;\n  height: 24px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_clearButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_sectionHeader {\n  gap: 0;\n  padding-left: 0;\n  margin-bottom: 12px;\n  justify-content: flex-start;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_headerActions {\n  max-width: none;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_iconButton {\n  width: 36px;\n  height: 36px;\n  \n  border-radius: var(--dsw-radius-md);\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_search {\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  margin: 0 0 12px;\n  gap: 0;\n  \n  border-radius: var(--dsw-radius-md);\n  border-color: transparent;\n  background: transparent;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_searchButton {\n  width: 36px;\n  height: 36px;\n  border-radius: var(--dsw-radius-md);\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_rail .WorkspaceBrowser_searchButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_listArea {\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  margin-left: -4px;\n  margin-right: calc(-1 * var(--dsh-session-list-edge-inset));\n  padding-left: 4px;\n  \n  overflow: visible;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_listArea {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n}\n\n\n.WorkspaceBrowser_treeBody {\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  position: relative;\n}\n\n\n.WorkspaceBrowser_fade {\n  position: absolute;\n  left: 0;\n  right: var(--dsh-session-list-edge-inset);\n  bottom: 0;\n  height: 24px;\n  background: linear-gradient(to bottom, transparent, var(--dsw-specific-sidebar-fill));\n  pointer-events: none;\n}\n\n\n[data-platform='darwin'] .WorkspaceBrowser_fade {\n  display: none;\n}\n\n\n.WorkspaceBrowser_wide {\n  animation: WorkspaceBrowser_wide-in 200ms var(--ds-ease-in-out);\n}\n\n@keyframes WorkspaceBrowser_wide-in {\n  from { opacity: 0; }\n}\n\n\n.WorkspaceBrowser_list {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  margin-left: -4px;\n  margin-right: var(--dsh-session-list-scrollbar-offset);\n  padding-left: 4px;\n  padding-right: calc(\n    var(--dsh-session-list-edge-inset)\n    - var(--dsh-session-list-scrollbar-width)\n    - var(--dsh-session-list-scrollbar-offset)\n  );\n  \n  padding-bottom: 16px;\n  scrollbar-gutter: stable;\n}\n\n.WorkspaceBrowser_flatList > * + *,\n.WorkspaceBrowser_searchTree > [role='treeitem'] + [role='treeitem'],\n.WorkspaceBrowser_groupSection > * + * {\n  margin-top: 2px;\n}\n\n.WorkspaceBrowser_searchStatus {\n  padding: 10px 12px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.WorkspaceBrowser_skeletonRow {\n  display: flex;\n  \n  align-items: flex-start;\n  gap: var(--dsh-sidebar-label-gap);\n  box-sizing: border-box;\n  min-height: 48px;\n  padding: 6px var(--dsh-sidebar-row-padding) 7px;\n}\n\n.WorkspaceBrowser_skeletonDot {\n  flex: none;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  corner-shape: round;\n}\n\n.WorkspaceBrowser_skeletonBars {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.WorkspaceBrowser_skeletonDot,\n.WorkspaceBrowser_skeletonBar {\n  background: var(--dsw-alias-bg-skeleton);\n  animation: WorkspaceBrowser_search-skeleton 2s cubic-bezier(0.36, 0, 0.64, 1) infinite;\n}\n\n.WorkspaceBrowser_skeletonBar {\n  width: 65%;\n  height: 16px;\n  border-radius: var(--dsw-radius-xs);\n}\n\n.WorkspaceBrowser_skeletonBarWide {\n  width: 90%;\n  height: 13px;\n}\n\n@keyframes WorkspaceBrowser_search-skeleton {\n  0% { opacity: 1; }\n  40% { opacity: 0.6; }\n  80%, 100% { opacity: 1; }\n}\n\n\n.WorkspaceBrowser_groupSection {\n  position: relative;\n}\n\n.WorkspaceBrowser_groupSection + .WorkspaceBrowser_groupSection {\n  margin-top: 4px;\n}\n\n.WorkspaceBrowser_listTopDropIndicator,\n.WorkspaceBrowser_workspaceDropBefore::before,\n.WorkspaceBrowser_workspaceDropAfter::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  left: 0;\n  right: 0;\n  height: 12px;\n  background:\n    linear-gradient(\n      55deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 0 / 5px 7px no-repeat,\n    linear-gradient(\n      125deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 5px / 5px 7px no-repeat,\n    linear-gradient(\n      var(--dsw-alias-state-business-primary) 0 0\n    ) 4px 5px / calc(100% - 4px) 2px no-repeat;\n  pointer-events: none;\n}\n\n\n.WorkspaceBrowser_listTopDropIndicator {\n  top: -8px;\n  left: 0;\n  right: var(--dsh-session-list-edge-inset);\n}\n\n.WorkspaceBrowser_listTopDropActive > .WorkspaceBrowser_workspaceDropBefore:first-child::before {\n  display: none;\n}\n\n.WorkspaceBrowser_workspaceDropBefore::before {\n  top: -8px;\n}\n\n.WorkspaceBrowser_workspaceDropAfter::after {\n  bottom: -8px;\n}\n\n.WorkspaceBrowser_sessionOverflowButton {\n  width: 100%;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0 var(--dsh-sidebar-row-padding) 0 calc(var(--dsh-sidebar-row-padding) + 16px + var(--dsh-sidebar-label-gap) + var(--dsh-workspace-indent, 0px));\n  background: transparent;\n  cursor: pointer;\n  text-align: left;\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_groupSection > .WorkspaceBrowser_sessionOverflowButton {\n  margin-top: 0;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_sessionOverflowButton:hover {\n    background: transparent;\n    color: var(--dsw-alias-label-secondary);\n  }\n}\n\n.WorkspaceBrowser_empty {\n  padding: 16px 12px;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 13px;\n}\n\n.WorkspaceBrowser_emptyState {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 8px;\n  margin-top: 80px;\n  padding: 0 12px;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 13px;\n  line-height: 20px;\n}\n\n.WorkspaceBrowser_emptyState > svg {\n  margin-bottom: 4px;\n  color: var(--dsw-alias-label-caption);\n}\n\n.WorkspaceBrowser_emptyAction {\n  padding: 0;\n  border: none;\n  background: none;\n  cursor: pointer;\n  font-size: 13px;\n  line-height: 20px;\n  color: var(--dsw-alias-link);\n}\n\n\n.WorkspaceBrowser_renameInput {\n  box-sizing: border-box;\n  width: 100%;\n  height: 44px;\n  padding: 7px 14px;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-lg);\n  outline: none;\n  background: transparent;\n  font-size: 14px;\n  font-weight: 400;\n  line-height: 22px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_renameInput:disabled {\n  color: var(--dsw-alias-label-dimmed);\n}\n\n.WorkspaceBrowser_renameError {\n  margin-top: 8px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspaceBrowser_deleteAction:not(:disabled) {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspaceBrowser_deleteStatus {\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspaceBrowser_archiveActivity {\n  margin: 0 0 8px;\n  padding-left: 18px;\n  font-size: 13px;\n  line-height: 20px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_archiveActivity li {\n  overflow-wrap: anywhere;\n}\n\n@media (pointer: coarse) {\n  .WorkspaceBrowser_searchInput,\n  .WorkspaceBrowser_renameInput {\n    font-size: 16px;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .WorkspaceBrowser_wide {\n    animation: none;\n  }\n\n  .WorkspaceBrowser_skeletonDot,\n  .WorkspaceBrowser_skeletonBar {\n    animation: none;\n  }\n\n  .WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader.WorkspaceBrowser_searchSpacingMotion,\n  .WorkspaceBrowser_search,\n  .WorkspaceBrowser_sectionLabel,\n  .WorkspaceBrowser_searchSlot,\n  .WorkspaceBrowser_searchInput,\n  .WorkspaceBrowser_headerActions {\n    transition: none;\n  }\n}\n\n.Rows_projectRow,\n.Rows_sessionRow {\n  display: flex;\n  align-items: center;\n  gap: var(--dsh-sidebar-label-gap);\n  border-radius: var(--dsw-radius-md);\n  border-inline: var(--dsh-sidebar-paint-inset) solid transparent;\n  background-clip: padding-box;\n  box-sizing: border-box;\n  padding: 0 8px;\n  padding-inline-start: calc(var(--dsh-sidebar-row-padding) - var(--dsh-sidebar-paint-inset) + var(--dsh-workspace-indent, 0px));\n  cursor: pointer;\n  -webkit-user-select: none;\n  user-select: none;\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .Rows_projectRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n.Rows_sessionRow.Rows_selected {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n.Rows_dragPreview {\n  background: var(--dsw-specific-sidebar-fill);\n}\n\n.Rows_searchResultRow {\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  width: 100%;\n  min-height: 48px;\n  box-sizing: border-box;\n  border: none;\n  border-radius: var(--dsw-radius-lg);\n  padding: 4px calc(var(--dsh-sidebar-row-padding) - var(--dsh-sidebar-paint-inset));\n  border-inline: var(--dsh-sidebar-paint-inset) solid transparent;\n  background: transparent;\n  background-clip: padding-box;\n  cursor: pointer;\n  text-align: left;\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .Rows_searchResultRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n.Rows_searchResultRow.Rows_selected {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n.Rows_searchResultHeading {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n}\n\n.Rows_searchResultTitle {\n  flex: 0 1 auto;\n  min-width: 0;\n  margin: 0 var(--dsh-sidebar-label-gap);\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.Rows_searchResultMeta {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n  margin-left: calc(16px + var(--dsh-sidebar-label-gap));\n}\n\n.Rows_searchResultWorkspace,\n.Rows_searchResultSnippet {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12px;\n  line-height: 17px;\n}\n\n.Rows_searchResultWorkspace {\n  flex: none;\n  max-width: 40%;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.Rows_searchResultWorkspace:only-child {\n  max-width: 100%;\n}\n\n.Rows_searchResultSnippet {\n  flex: 1;\n  min-width: 0;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.Rows_projectRow {\n  height: 34px;\n  align-items: center;\n  box-sizing: border-box;\n}\n\n.Rows_projectRow .Rows_rowActions {\n  height: 20px;\n}\n\n\n.Rows_sessionRow {\n  height: 32px;\n  gap: 0;\n}\n\n.Rows_sessionRow .Rows_title {\n  margin: 0 6px 0 var(--dsh-sidebar-label-gap);\n}\n\n.Rows_slot {\n  flex: none;\n  width: 16px;\n  height: 20px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_visuallyHidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}\n\n.Rows_folderActive {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n\n\n.Rows_projectRow .Rows_chevron { display: none; }\n@media (hover: hover) {\n  .Rows_projectRow:hover .Rows_chevron { display: inline-flex; }\n\n  .Rows_projectRow:hover .Rows_folder { display: none; }\n}\n\n\n.Rows_arrow {\n  transition: transform 150ms var(--ds-ease-in-out);\n}\n\n.Rows_arrowOpen {\n  transform: rotate(90deg);\n}\n\n.Rows_projectText {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.Rows_title {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.Rows_renameInput {\n  min-width: 0;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 0 2px;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-sm);\n  background: var(--dsw-alias-button-elevated-fill);\n  color: inherit;\n  outline: none;\n}\n\n\n.Rows_sessionRow .Rows_title {\n  flex: 1;\n}\n\n\n.Rows_sessionRow .Rows_title[data-scrolled] {\n  mask-image: linear-gradient(to right, transparent, #000 12px);\n}\n\n.Rows_sessionRow .Rows_title[data-clipped] {\n  mask-image: linear-gradient(to left, transparent, #000 12px);\n}\n\n.Rows_sessionRow .Rows_title[data-scrolled][data-clipped] {\n  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent);\n}\n\n.Rows_meta {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12px;\n  line-height: 20px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_time {\n  flex: none;\n  font-size: 10px;\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-inline-end: -1px;\n}\n\n.Rows_pinIndicator {\n  display: inline-flex;\n  flex: none;\n  width: 16px;\n  height: 20px;\n  align-items: center;\n  justify-content: center;\n  margin-left: 6px;\n  color: var(--dsw-alias-label-caption);\n}\n\n\n.Rows_sessionRow.Rows_archived .Rows_title,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultTitle,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultWorkspace,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultSnippet {\n  color: var(--dsw-alias-label-caption);\n}\n\n.Rows_dot {\n  flex: none;\n}\n\n\n.Rows_rowActions {\n  flex: none;\n  display: none;\n  align-items: center;\n  gap: 13px;\n}\n\n@media (hover: hover) {\n  .Rows_projectRow:hover .Rows_rowActions,\n  .Rows_searchResultRow:hover .Rows_rowActions {\n    display: inline-flex;\n  }\n}\n\n.Rows_projectRow.Rows_menuOpen .Rows_rowActions {\n  display: inline-flex;\n}\n\n.Rows_rowQuickActions {\n  display: contents;\n}\n\n\n.Rows_searchResultHeading .Rows_rowActions {\n  margin-left: auto;\n}\n\n.Rows_rowResting {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_rowResting .Rows_pinIndicator {\n  margin-left: 0;\n}\n\n\n@media (hover: hover) {\n  .Rows_sessionRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n\n  .Rows_sessionRow:hover .Rows_rowActions,\n  .Rows_sessionRow.Rows_menuOpen .Rows_rowActions,\n  html[data-input-modality='keyboard'] .Rows_sessionRow:focus-within .Rows_rowActions {\n    display: inline-flex;\n  }\n\n  .Rows_sessionRow:hover .Rows_rowResting,\n  .Rows_sessionRow.Rows_menuOpen .Rows_rowResting,\n  html[data-input-modality='keyboard'] .Rows_sessionRow:focus-within .Rows_rowResting {\n    display: none;\n  }\n\n  .Rows_sessionRow:hover .Rows_title,\n  .Rows_sessionRow.Rows_menuOpen .Rows_title {\n    text-overflow: clip;\n  }\n}\n\n@media (hover: none) {\n  .Rows_projectRow .Rows_rowActions,\n  .Rows_searchResultRow .Rows_rowActions,\n  .Rows_sessionRow .Rows_rowActions {\n    display: inline-flex;\n  }\n\n  \n  .Rows_sessionRow .Rows_timestamp,\n  .Rows_sessionRow:has(.Rows_pinnedAction) .Rows_pinIndicator,\n  .Rows_sessionRow .Rows_rowQuickActions > [data-slot] > :not(.Rows_pinnedAction),\n  .Rows_projectRow[aria-expanded='false'] .Rows_rowActions {\n    display: none;\n  }\n\n  .Rows_sessionRow .Rows_pinnedAction {\n    \n    order: -1;\n  }\n}\n\n\n.Rows_projectRow.Rows_menuOpen,\n.Rows_sessionRow.Rows_menuOpen {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n\n.Rows_sessionRow.Rows_dropBefore,\n.Rows_sessionRow.Rows_dropAfter {\n  position: relative;\n}\n\n.Rows_sessionRow.Rows_dropBefore::before,\n.Rows_sessionRow.Rows_dropAfter::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  left: calc(-1 * var(--dsh-sidebar-paint-inset));\n  right: calc(4px - var(--dsh-sidebar-paint-inset));\n  height: 12px;\n  background:\n    linear-gradient(\n      55deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 0 / 5px 7px no-repeat,\n    linear-gradient(\n      125deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 5px / 5px 7px no-repeat,\n    linear-gradient(\n      var(--dsw-alias-state-business-primary) 0 0\n    ) 4px 5px / calc(100% - 4px) 2px no-repeat;\n  pointer-events: none;\n}\n\n.Rows_sessionRow.Rows_dropBefore::before {\n  top: -7px;\n}\n\n.Rows_sessionRow.Rows_dropAfter::after {\n  bottom: -7px;\n}\n\n\n.Rows_hoverContent {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.Rows_hoverTitle {\n  font-size: 14px;\n  line-height: 20px;\n  color: #FFFFFF;\n  overflow-wrap: break-word;\n}\n\n.Rows_hoverPath {\n  font-size: 12px;\n  line-height: 16px;\n  color: #CFD3D6;\n  word-break: break-all;\n}\n\n.Rows_hoverTime {\n  font-size: 12px;\n  line-height: 16px;\n  color: #CFD3D6;\n}\n\n.Rows_hoverStatus {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  line-height: 20px;\n  color: #ADB2B8;\n}\n\n\n.Rows_hoverArchived svg {\n  flex-shrink: 0;\n  margin: 0 -4px;\n}\n\n\n.Rows_iconButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 24px;\n  height: 24px;\n  margin: -4px;\n  border: none;\n  border-radius: var(--dsw-radius-xs);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.Rows_iconButton:focus-visible {\n  outline-offset: -2px;\n}\n\n@media (hover: hover) {\n  .Rows_iconButton:hover {\n    color: var(--dsw-alias-label-primary);\n  }\n}\n\n\n.Rows_chevron {\n  color: var(--dsw-alias-label-caption);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .Rows_arrow {\n    animation: none;\n    transition: none;\n  }\n}\n";
+globalThis.__LAB_CSS__ = ".WorkspaceBrowser_root {\n  --dsh-session-list-edge-inset: var(--dsh-sidebar-inline-padding);\n  --dsh-session-list-scrollbar-width: 5px;\n  --dsh-session-list-scrollbar-offset: 2px;\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  padding-right: var(--dsh-session-list-edge-inset);\n}\n\n.WorkspaceBrowser_root.WorkspaceBrowser_rail {\n  padding-right: 0;\n}\n\n.WorkspaceBrowser_iconButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 28px;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspaceBrowser_iconButton:focus-visible,\n.WorkspaceBrowser_searchButton:focus-visible,\n.WorkspaceBrowser_clearButton:focus-visible {\n  outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n  outline-offset: -2px;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_iconButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_viewOptionsMenu {\n  min-width: 200px;\n}\n\n\n.WorkspaceBrowser_sectionHeader {\n  flex: none;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 4px;\n  height: 36px;\n  padding-left: var(--dsh-sidebar-row-padding);\n  margin-bottom: 4px;\n  box-sizing: border-box;\n  border-radius: var(--dsw-radius-md);\n  overflow: hidden;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader {\n  margin-top: 2px;\n  margin-right: -4px;\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader.WorkspaceBrowser_searchSpacingMotion {\n  transition:\n    margin-right 180ms var(--ds-ease-in-out),\n    padding-inline 180ms var(--ds-ease-in-out),\n    gap 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader:not(:has(.WorkspaceBrowser_searchExpanded)) {\n  padding-right: 1px;\n}\n\n.WorkspaceBrowser_sectionLabel {\n  position: relative;\n  left: -1px;\n  flex: none;\n  max-width: 45%;\n  min-width: 0;\n  overflow: hidden;\n  white-space: nowrap;\n  line-height: 20px;\n  opacity: 1;\n  visibility: visible;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    margin-right 180ms var(--ds-ease-in-out),\n    opacity 120ms var(--ds-ease-in-out),\n    transform 180ms var(--ds-ease-in-out),\n    visibility 0s linear;\n}\n\n.WorkspaceBrowser_sectionLabelHidden {\n  max-width: 0;\n  margin-right: -4px;\n  opacity: 0;\n  transform: translateX(-4px);\n  visibility: hidden;\n  transition-delay: 0s, 0s, 0s, 0s, 180ms;\n}\n\n.WorkspaceBrowser_searchSlot {\n  flex: 1;\n  max-width: 28px;\n  min-width: 0;\n  display: flex;\n  align-items: center;\n  margin-left: auto;\n  padding-left: 0;\n  box-sizing: border-box;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    padding-left 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_searchSlotExpanded {\n  max-width: 100%;\n  padding-left: 0;\n}\n\n.WorkspaceBrowser_headerActions {\n  flex: none;\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  max-width: 60px;\n  opacity: 1;\n  overflow: hidden;\n  visibility: visible;\n  transition:\n    max-width 180ms var(--ds-ease-in-out),\n    opacity 120ms var(--ds-ease-in-out),\n    transform 180ms var(--ds-ease-in-out),\n    visibility 0s linear;\n}\n\n.WorkspaceBrowser_headerActionsHidden {\n  max-width: 0;\n  opacity: 0;\n  transform: translateX(4px);\n  visibility: hidden;\n  pointer-events: none;\n  transition-delay: 0s, 0s, 0s, 180ms;\n}\n\n\n.WorkspaceBrowser_search {\n  flex: none;\n  display: flex;\n  align-items: center;\n  gap: 0;\n  width: 100%;\n  height: 28px;\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  background: transparent;\n  cursor: text;\n  color: var(--dsw-alias-label-secondary);\n  overflow: hidden;\n  transition:\n    width 180ms var(--ds-ease-in-out),\n    padding 180ms var(--ds-ease-in-out),\n    border-color 180ms var(--ds-ease-in-out),\n    background-color 180ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader:has(.WorkspaceBrowser_searchExpanded) {\n  margin-right: 0;\n  padding-inline: calc(var(--dsh-sidebar-paint-inset) + 1px);\n  gap: 0;\n}\n\n.WorkspaceBrowser_sectionHeader:has(.WorkspaceBrowser_searchExpanded) .WorkspaceBrowser_sectionLabelHidden {\n  margin-right: 0;\n}\n\n.WorkspaceBrowser_searchExpanded {\n  width: 100%;\n  height: 32px;\n  margin-inline: 0;\n  padding: 0 4px 0 0;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-md);\n  background: transparent;\n  color: var(--dsw-alias-label-caption);\n}\n\n.WorkspaceBrowser_searchButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 28px;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: inherit;\n}\n\n.WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchButton {\n  width: 28px;\n  height: 32px;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_searchButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n\n  .WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchButton:hover {\n    background: transparent;\n  }\n}\n\n.WorkspaceBrowser_searchInput {\n  flex: 1;\n  width: 0;\n  min-width: 0;\n  border: none;\n  outline: none;\n  background: transparent;\n  opacity: 0;\n  pointer-events: none;\n  font-size: 13px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-primary);\n  transition: opacity 120ms var(--ds-ease-in-out);\n}\n\n.WorkspaceBrowser_searchExpanded .WorkspaceBrowser_searchInput {\n  margin-left: -2px;\n  opacity: 1;\n  pointer-events: auto;\n}\n\n.WorkspaceBrowser_searchInput::placeholder {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_clearButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 24px;\n  height: 24px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_clearButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_sectionHeader {\n  gap: 0;\n  padding-left: 0;\n  margin-bottom: 12px;\n  justify-content: flex-start;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_headerActions {\n  max-width: none;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_iconButton {\n  width: 36px;\n  height: 36px;\n  \n  border-radius: var(--dsw-radius-md);\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_search {\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  margin: 0 0 12px;\n  gap: 0;\n  \n  border-radius: var(--dsw-radius-md);\n  border-color: transparent;\n  background: transparent;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_searchButton {\n  width: 36px;\n  height: 36px;\n  border-radius: var(--dsw-radius-md);\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_rail .WorkspaceBrowser_searchButton:hover {\n    background: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n\n.WorkspaceBrowser_listArea {\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  margin-left: -4px;\n  margin-right: calc(-1 * var(--dsh-session-list-edge-inset));\n  padding-left: 4px;\n  \n  overflow: visible;\n}\n\n.WorkspaceBrowser_rail .WorkspaceBrowser_listArea {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n}\n\n\n.WorkspaceBrowser_treeBody {\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  position: relative;\n}\n\n\n.WorkspaceBrowser_fade {\n  position: absolute;\n  left: 0;\n  right: var(--dsh-session-list-edge-inset);\n  bottom: 0;\n  height: 24px;\n  background: linear-gradient(to bottom, transparent, var(--dsw-specific-sidebar-fill));\n  pointer-events: none;\n}\n\n\n[data-platform='darwin'] .WorkspaceBrowser_fade {\n  display: none;\n}\n\n\n.WorkspaceBrowser_wide {\n  animation: WorkspaceBrowser_wide-in 200ms var(--ds-ease-in-out);\n}\n\n@keyframes WorkspaceBrowser_wide-in {\n  from { opacity: 0; }\n}\n\n\n.WorkspaceBrowser_list {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  margin-left: -4px;\n  margin-right: var(--dsh-session-list-scrollbar-offset);\n  padding-left: 4px;\n  padding-right: calc(\n    var(--dsh-session-list-edge-inset)\n    - var(--dsh-session-list-scrollbar-width)\n    - var(--dsh-session-list-scrollbar-offset)\n  );\n  \n  padding-bottom: 16px;\n  scrollbar-gutter: stable;\n}\n\n.WorkspaceBrowser_flatList > * + *,\n.WorkspaceBrowser_searchTree > [role='treeitem'] + [role='treeitem'],\n.WorkspaceBrowser_groupSection > * + * {\n  margin-top: 2px;\n}\n\n.WorkspaceBrowser_searchStatus {\n  padding: 10px 12px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.WorkspaceBrowser_skeletonRow {\n  display: flex;\n  \n  align-items: flex-start;\n  gap: var(--dsh-sidebar-label-gap);\n  box-sizing: border-box;\n  min-height: 48px;\n  padding: 6px var(--dsh-sidebar-row-padding) 7px;\n}\n\n.WorkspaceBrowser_skeletonDot {\n  flex: none;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  corner-shape: round;\n}\n\n.WorkspaceBrowser_skeletonBars {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.WorkspaceBrowser_skeletonDot,\n.WorkspaceBrowser_skeletonBar {\n  background: var(--dsw-alias-bg-skeleton);\n  animation: WorkspaceBrowser_search-skeleton 2s cubic-bezier(0.36, 0, 0.64, 1) infinite;\n}\n\n.WorkspaceBrowser_skeletonBar {\n  width: 65%;\n  height: 16px;\n  border-radius: var(--dsw-radius-xs);\n}\n\n.WorkspaceBrowser_skeletonBarWide {\n  width: 90%;\n  height: 13px;\n}\n\n@keyframes WorkspaceBrowser_search-skeleton {\n  0% { opacity: 1; }\n  40% { opacity: 0.6; }\n  80%, 100% { opacity: 1; }\n}\n\n\n.WorkspaceBrowser_groupSection {\n  position: relative;\n}\n\n.WorkspaceBrowser_groupSection + .WorkspaceBrowser_groupSection {\n  margin-top: 4px;\n}\n\n.WorkspaceBrowser_listTopDropIndicator,\n.WorkspaceBrowser_workspaceDropBefore::before,\n.WorkspaceBrowser_workspaceDropAfter::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  left: 0;\n  right: 0;\n  height: 12px;\n  background:\n    linear-gradient(\n      55deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 0 / 5px 7px no-repeat,\n    linear-gradient(\n      125deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 5px / 5px 7px no-repeat,\n    linear-gradient(\n      var(--dsw-alias-state-business-primary) 0 0\n    ) 4px 5px / calc(100% - 4px) 2px no-repeat;\n  pointer-events: none;\n}\n\n\n.WorkspaceBrowser_listTopDropIndicator {\n  top: -8px;\n  left: 0;\n  right: var(--dsh-session-list-edge-inset);\n}\n\n.WorkspaceBrowser_listTopDropActive > .WorkspaceBrowser_workspaceDropBefore:first-child::before {\n  display: none;\n}\n\n.WorkspaceBrowser_workspaceDropBefore::before {\n  top: -8px;\n}\n\n.WorkspaceBrowser_workspaceDropAfter::after {\n  bottom: -8px;\n}\n\n.WorkspaceBrowser_sessionOverflowButton {\n  width: 100%;\n  height: 28px;\n  border: none;\n  border-radius: var(--dsw-radius-sm);\n  padding: 0 var(--dsh-sidebar-row-padding) 0 calc(var(--dsh-sidebar-row-padding) + 16px + var(--dsh-sidebar-label-gap) + var(--dsh-workspace-indent, 0px));\n  background: transparent;\n  cursor: pointer;\n  text-align: left;\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.WorkspaceBrowser_groupSection > .WorkspaceBrowser_sessionOverflowButton {\n  margin-top: 0;\n}\n\n@media (hover: hover) {\n  .WorkspaceBrowser_sessionOverflowButton:hover {\n    background: transparent;\n    color: var(--dsw-alias-label-secondary);\n  }\n}\n\n.WorkspaceBrowser_empty {\n  padding: 16px 12px;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 13px;\n}\n\n.WorkspaceBrowser_emptyState {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 8px;\n  margin-top: 80px;\n  padding: 0 12px;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 13px;\n  line-height: 20px;\n}\n\n.WorkspaceBrowser_emptyState > svg {\n  margin-bottom: 4px;\n  color: var(--dsw-alias-label-caption);\n}\n\n.WorkspaceBrowser_emptyAction {\n  padding: 0;\n  border: none;\n  background: none;\n  cursor: pointer;\n  font-size: 13px;\n  line-height: 20px;\n  color: var(--dsw-alias-link);\n}\n\n\n.WorkspaceBrowser_renameInput {\n  box-sizing: border-box;\n  width: 100%;\n  height: 44px;\n  padding: 7px 14px;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-lg);\n  outline: none;\n  background: transparent;\n  font-size: 14px;\n  font-weight: 400;\n  line-height: 22px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_renameInput:disabled {\n  color: var(--dsw-alias-label-dimmed);\n}\n\n.WorkspaceBrowser_renameError {\n  margin-top: 8px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspaceBrowser_deleteAction:not(:disabled) {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspaceBrowser_deleteStatus {\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspaceBrowser_archiveActivity {\n  margin: 0 0 8px;\n  padding-left: 18px;\n  font-size: 13px;\n  line-height: 20px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.WorkspaceBrowser_archiveActivity li {\n  overflow-wrap: anywhere;\n}\n\n@media (pointer: coarse) {\n  .WorkspaceBrowser_searchInput,\n  .WorkspaceBrowser_renameInput {\n    font-size: 16px;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .WorkspaceBrowser_wide {\n    animation: none;\n  }\n\n  .WorkspaceBrowser_skeletonDot,\n  .WorkspaceBrowser_skeletonBar {\n    animation: none;\n  }\n\n  .WorkspaceBrowser_root:not(.WorkspaceBrowser_rail) .WorkspaceBrowser_sectionHeader.WorkspaceBrowser_searchSpacingMotion,\n  .WorkspaceBrowser_search,\n  .WorkspaceBrowser_sectionLabel,\n  .WorkspaceBrowser_searchSlot,\n  .WorkspaceBrowser_searchInput,\n  .WorkspaceBrowser_headerActions {\n    transition: none;\n  }\n}\n\n.Rows_projectRow,\n.Rows_sessionRow {\n  display: flex;\n  align-items: center;\n  gap: var(--dsh-sidebar-label-gap);\n  border-radius: var(--dsw-radius-md);\n  border-inline: var(--dsh-sidebar-paint-inset) solid transparent;\n  background-clip: padding-box;\n  box-sizing: border-box;\n  padding: 0 8px;\n  padding-inline-start: calc(var(--dsh-sidebar-row-padding) - var(--dsh-sidebar-paint-inset) + var(--dsh-workspace-indent, 0px));\n  cursor: pointer;\n  -webkit-user-select: none;\n  user-select: none;\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .Rows_projectRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n.Rows_sessionRow.Rows_selected {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n.Rows_dragPreview {\n  background: var(--dsw-specific-sidebar-fill);\n}\n\n.Rows_searchResultRow {\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  width: 100%;\n  min-height: 48px;\n  box-sizing: border-box;\n  border: none;\n  border-radius: var(--dsw-radius-lg);\n  padding: 4px calc(var(--dsh-sidebar-row-padding) - var(--dsh-sidebar-paint-inset));\n  border-inline: var(--dsh-sidebar-paint-inset) solid transparent;\n  background: transparent;\n  background-clip: padding-box;\n  cursor: pointer;\n  text-align: left;\n  color: var(--dsw-alias-label-primary);\n}\n\n@media (hover: hover) {\n  .Rows_searchResultRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n}\n\n.Rows_searchResultRow.Rows_selected {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n.Rows_searchResultHeading {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n}\n\n.Rows_searchResultTitle {\n  flex: 0 1 auto;\n  min-width: 0;\n  margin: 0 var(--dsh-sidebar-label-gap);\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.Rows_searchResultMeta {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n  margin-left: calc(16px + var(--dsh-sidebar-label-gap));\n}\n\n.Rows_searchResultWorkspace,\n.Rows_searchResultSnippet {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12px;\n  line-height: 17px;\n}\n\n.Rows_searchResultWorkspace {\n  flex: none;\n  max-width: 40%;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.Rows_searchResultWorkspace:only-child {\n  max-width: 100%;\n}\n\n.Rows_searchResultSnippet {\n  flex: 1;\n  min-width: 0;\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.Rows_projectRow {\n  height: 34px;\n  align-items: center;\n  box-sizing: border-box;\n}\n\n.Rows_projectRow .Rows_rowActions {\n  height: 20px;\n}\n\n\n.Rows_sessionRow {\n  height: 32px;\n  gap: 0;\n}\n\n.Rows_sessionRow .Rows_title {\n  margin: 0 6px 0 var(--dsh-sidebar-label-gap);\n}\n\n.Rows_slot {\n  flex: none;\n  width: 16px;\n  height: 20px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_visuallyHidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}\n\n.Rows_workspaceIcon {\n  width: 16px;\n  height: 16px;\n  object-fit: contain;\n  border-radius: 3px;\n}\n\n.Rows_folderActive {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n\n\n.Rows_projectRow .Rows_chevron { display: none; }\n@media (hover: hover) {\n  .Rows_projectRow:hover .Rows_chevron { display: inline-flex; }\n\n  .Rows_projectRow:hover .Rows_folder { display: none; }\n}\n\n\n.Rows_arrow {\n  transition: transform 150ms var(--ds-ease-in-out);\n}\n\n.Rows_arrowOpen {\n  transform: rotate(90deg);\n}\n\n.Rows_projectText {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.Rows_title {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.Rows_renameInput {\n  min-width: 0;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 0 2px;\n  border: 0.5px solid var(--dsw-alias-border-l4);\n  border-radius: var(--dsw-radius-sm);\n  background: var(--dsw-alias-button-elevated-fill);\n  color: inherit;\n  outline: none;\n}\n\n\n.Rows_sessionRow .Rows_title {\n  flex: 1;\n}\n\n\n.Rows_sessionRow .Rows_title[data-scrolled] {\n  mask-image: linear-gradient(to right, transparent, #000 12px);\n}\n\n.Rows_sessionRow .Rows_title[data-clipped] {\n  mask-image: linear-gradient(to left, transparent, #000 12px);\n}\n\n.Rows_sessionRow .Rows_title[data-scrolled][data-clipped] {\n  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent);\n}\n\n.Rows_meta {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12px;\n  line-height: 20px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_time {\n  flex: none;\n  font-size: 10px;\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-inline-end: -1px;\n}\n\n.Rows_pinIndicator {\n  display: inline-flex;\n  flex: none;\n  width: 16px;\n  height: 20px;\n  align-items: center;\n  justify-content: center;\n  margin-left: 6px;\n  color: var(--dsw-alias-label-caption);\n}\n\n\n.Rows_sessionRow.Rows_archived .Rows_title,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultTitle,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultWorkspace,\n.Rows_searchResultRow.Rows_archived .Rows_searchResultSnippet {\n  color: var(--dsw-alias-label-caption);\n}\n\n.Rows_dot {\n  flex: none;\n}\n\n\n.Rows_rowActions {\n  flex: none;\n  display: none;\n  align-items: center;\n  gap: 13px;\n}\n\n@media (hover: hover) {\n  .Rows_projectRow:hover .Rows_rowActions,\n  .Rows_searchResultRow:hover .Rows_rowActions {\n    display: inline-flex;\n  }\n}\n\n.Rows_projectRow.Rows_menuOpen .Rows_rowActions {\n  display: inline-flex;\n}\n\n.Rows_rowQuickActions {\n  display: contents;\n}\n\n\n.Rows_searchResultHeading .Rows_rowActions {\n  margin-left: auto;\n}\n\n.Rows_rowResting {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.Rows_rowResting .Rows_pinIndicator {\n  margin-left: 0;\n}\n\n\n@media (hover: hover) {\n  .Rows_sessionRow:hover {\n    background-color: var(--dsw-alias-interactive-bg-hover);\n  }\n\n  .Rows_sessionRow:hover .Rows_rowActions,\n  .Rows_sessionRow.Rows_menuOpen .Rows_rowActions,\n  html[data-input-modality='keyboard'] .Rows_sessionRow:focus-within .Rows_rowActions {\n    display: inline-flex;\n  }\n\n  .Rows_sessionRow:hover .Rows_rowResting,\n  .Rows_sessionRow.Rows_menuOpen .Rows_rowResting,\n  html[data-input-modality='keyboard'] .Rows_sessionRow:focus-within .Rows_rowResting {\n    display: none;\n  }\n\n  .Rows_sessionRow:hover .Rows_title,\n  .Rows_sessionRow.Rows_menuOpen .Rows_title {\n    text-overflow: clip;\n  }\n}\n\n@media (hover: none) {\n  .Rows_projectRow .Rows_rowActions,\n  .Rows_searchResultRow .Rows_rowActions,\n  .Rows_sessionRow .Rows_rowActions {\n    display: inline-flex;\n  }\n\n  \n  .Rows_sessionRow .Rows_timestamp,\n  .Rows_sessionRow:has(.Rows_pinnedAction) .Rows_pinIndicator,\n  .Rows_sessionRow .Rows_rowQuickActions > [data-slot] > :not(.Rows_pinnedAction),\n  .Rows_projectRow[aria-expanded='false'] .Rows_rowActions {\n    display: none;\n  }\n\n  .Rows_sessionRow .Rows_pinnedAction {\n    \n    order: -1;\n  }\n}\n\n\n.Rows_projectRow.Rows_menuOpen,\n.Rows_sessionRow.Rows_menuOpen {\n  background-color: var(--dsw-alias-interactive-bg-hover);\n}\n\n\n.Rows_sessionRow.Rows_dropBefore,\n.Rows_sessionRow.Rows_dropAfter {\n  position: relative;\n}\n\n.Rows_sessionRow.Rows_dropBefore::before,\n.Rows_sessionRow.Rows_dropAfter::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  left: calc(-1 * var(--dsh-sidebar-paint-inset));\n  right: calc(4px - var(--dsh-sidebar-paint-inset));\n  height: 12px;\n  background:\n    linear-gradient(\n      55deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 0 / 5px 7px no-repeat,\n    linear-gradient(\n      125deg,\n      transparent calc(50% - 1px),\n      var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px),\n      transparent calc(50% + 1px)\n    ) 0 5px / 5px 7px no-repeat,\n    linear-gradient(\n      var(--dsw-alias-state-business-primary) 0 0\n    ) 4px 5px / calc(100% - 4px) 2px no-repeat;\n  pointer-events: none;\n}\n\n.Rows_sessionRow.Rows_dropBefore::before {\n  top: -7px;\n}\n\n.Rows_sessionRow.Rows_dropAfter::after {\n  bottom: -7px;\n}\n\n\n.Rows_hoverContent {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.Rows_hoverTitle {\n  font-size: 14px;\n  line-height: 20px;\n  color: #FFFFFF;\n  overflow-wrap: break-word;\n}\n\n.Rows_hoverPath {\n  font-size: 12px;\n  line-height: 16px;\n  color: #CFD3D6;\n  word-break: break-all;\n}\n\n.Rows_hoverTime {\n  font-size: 12px;\n  line-height: 16px;\n  color: #CFD3D6;\n}\n\n.Rows_hoverStatus {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  line-height: 20px;\n  color: #ADB2B8;\n}\n\n\n.Rows_hoverArchived svg {\n  flex-shrink: 0;\n  margin: 0 -4px;\n}\n\n\n.Rows_iconButton {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 24px;\n  height: 24px;\n  margin: -4px;\n  border: none;\n  border-radius: var(--dsw-radius-xs);\n  padding: 0;\n  background: transparent;\n  cursor: pointer;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n\n.Rows_iconButton:focus-visible {\n  outline-offset: -2px;\n}\n\n@media (hover: hover) {\n  .Rows_iconButton:hover {\n    color: var(--dsw-alias-label-primary);\n  }\n}\n\n\n.Rows_chevron {\n  color: var(--dsw-alias-label-caption);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .Rows_arrow {\n    animation: none;\n    transition: none;\n  }\n}\n\n\n.WorkspacePicker_modalAction {\n  min-width: 72px;\n}\n\n.WorkspacePicker_modalError,\n.WorkspacePicker_menuStatus {\n  margin-top: 8px;\n  font-size: 12px;\n  line-height: 18px;\n}\n\n.WorkspacePicker_modalError {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.WorkspacePicker_menuStatus,\n.WorkspacePicker_pathSuffix {\n  color: var(--dsw-alias-label-secondary);\n}\n\n\n.WorkspacePicker_disambiguated {\n  display: flex;\n  gap: 4px;\n  min-width: 0;\n}\n\n.WorkspacePicker_title,\n.WorkspacePicker_pathSuffix {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.WorkspacePicker_pathSuffix {\n  flex: none;\n  max-width: 75%;\n}\n";
 window.__ModuleLoader__.load({
   id: "dsh-lab-sidebar",
   factory(require) {
@@ -1696,8 +1696,121 @@ function workspaceDisplayTitle(title, localizedDefault) {
 var import_react3 = require("react");
 var import_dsh_client_ui_primitives2 = require("@deepseek-ai/dsh-client-ui-primitives");
 
+// packages/lab-sidebar/src/client/icons.ts
+var ICON_KEY = "dsh.lab.icons.v1";
+var MAX_ICON_BYTES = 128 * 1024;
+var MAX_ICON_ENTRIES = 64;
+function emptyIconStore() {
+  return { version: 1, entries: {} };
+}
+function isIconDataUrl(value) {
+  return typeof value === "string" && /^data:image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon);base64,[A-Za-z0-9+/=]+$/u.test(value);
+}
+function dataUrlBytes(value) {
+  const comma = value.indexOf(",");
+  if (comma < 0) return 0;
+  const body = value.slice(comma + 1);
+  const padding = body.endsWith("==") ? 2 : body.endsWith("=") ? 1 : 0;
+  return Math.max(0, Math.floor(body.length * 3 / 4) - padding);
+}
+function fitsIconLimit(value, maxBytes = MAX_ICON_BYTES) {
+  return isIconDataUrl(value) && dataUrlBytes(value) <= maxBytes;
+}
+function parseRecord(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const record = { ...value };
+  const kind = record.kind;
+  if (kind !== "uploaded" && kind !== "detected" && kind !== "negative" && kind !== "invalid") return void 0;
+  if (typeof record.updatedAt !== "string" || record.updatedAt === "") return void 0;
+  const dataUrl = isIconDataUrl(record.dataUrl) ? record.dataUrl : void 0;
+  if (kind === "uploaded" || kind === "detected") {
+    if (dataUrl === void 0 || dataUrlBytes(dataUrl) > MAX_ICON_BYTES) return void 0;
+  }
+  const source = typeof record.source === "string" ? record.source : void 0;
+  const retryAfter = typeof record.retryAfter === "string" ? record.retryAfter : void 0;
+  return {
+    kind,
+    ...dataUrl === void 0 ? {} : { dataUrl },
+    ...source === void 0 ? {} : { source },
+    updatedAt: record.updatedAt,
+    ...retryAfter === void 0 ? {} : { retryAfter }
+  };
+}
+function parseIconStore(raw) {
+  if (raw === null || raw === "") return emptyIconStore();
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return emptyIconStore();
+  }
+  if (typeof parsed !== "object" || parsed === null || !("version" in parsed) || parsed.version !== 1) {
+    return emptyIconStore();
+  }
+  const entries = "entries" in parsed ? parsed.entries : void 0;
+  if (typeof entries !== "object" || entries === null) return emptyIconStore();
+  const next = {};
+  for (const [path, value] of Object.entries(entries)) {
+    const record = parseRecord(value);
+    if (record !== void 0) next[path] = record;
+  }
+  return { version: 1, entries: next };
+}
+function readIconStore(storage) {
+  if (storage === void 0) return emptyIconStore();
+  try {
+    return parseIconStore(storage.getItem(ICON_KEY));
+  } catch {
+    return emptyIconStore();
+  }
+}
+function writeIconStore(store, storage) {
+  const capped = capStore(store);
+  if (storage !== void 0) {
+    try {
+      storage.setItem(ICON_KEY, JSON.stringify(capped));
+    } catch {
+    }
+  }
+  return capped;
+}
+function capStore(store, max = MAX_ICON_ENTRIES) {
+  const entries = Object.entries(store.entries);
+  if (entries.length <= max) return store;
+  const keep = entries.sort((left, right) => Date.parse(right[1].updatedAt) - Date.parse(left[1].updatedAt)).slice(0, max);
+  return { version: 1, entries: Object.fromEntries(keep) };
+}
+function setUploadedIcon(store, path, dataUrl, now = (/* @__PURE__ */ new Date()).toISOString()) {
+  if (!fitsIconLimit(dataUrl)) return store;
+  return writeInMemory(store, path, { kind: "uploaded", dataUrl, updatedAt: now });
+}
+function setDetectedIcon(store, path, dataUrl, source, now = (/* @__PURE__ */ new Date()).toISOString()) {
+  if (!fitsIconLimit(dataUrl)) return store;
+  return writeInMemory(store, path, { kind: "detected", dataUrl, source, updatedAt: now });
+}
+function setNegativeIcon(store, path, retryAfter, now = (/* @__PURE__ */ new Date()).toISOString()) {
+  return writeInMemory(store, path, { kind: "negative", updatedAt: now, retryAfter });
+}
+function clearIcon(store, path) {
+  const entries = { ...store.entries };
+  delete entries[path];
+  return { version: 1, entries };
+}
+function iconFor(store, path, now = Date.now()) {
+  const record = store.entries[path];
+  if (record === void 0) return void 0;
+  if (record.kind === "negative" && record.retryAfter !== void 0 && Date.parse(record.retryAfter) > now) {
+    return record;
+  }
+  if (record.kind === "negative") return void 0;
+  return record;
+}
+function writeInMemory(store, path, record) {
+  return { version: 1, entries: { ...store.entries, [path]: record } };
+}
+
 // packages/lab-sidebar/src/client/plugin/client/rows/Rows.module.css
-var Rows_default = { "projectRow": "Rows_projectRow", "sessionRow": "Rows_sessionRow", "selected": "Rows_selected", "dragPreview": "Rows_dragPreview", "searchResultRow": "Rows_searchResultRow", "searchResultHeading": "Rows_searchResultHeading", "searchResultTitle": "Rows_searchResultTitle", "searchResultMeta": "Rows_searchResultMeta", "searchResultWorkspace": "Rows_searchResultWorkspace", "searchResultSnippet": "Rows_searchResultSnippet", "rowActions": "Rows_rowActions", "title": "Rows_title", "slot": "Rows_slot", "visuallyHidden": "Rows_visuallyHidden", "folderActive": "Rows_folderActive", "chevron": "Rows_chevron", "folder": "Rows_folder", "arrow": "Rows_arrow", "arrowOpen": "Rows_arrowOpen", "projectText": "Rows_projectText", "renameInput": "Rows_renameInput", "meta": "Rows_meta", "time": "Rows_time", "pinIndicator": "Rows_pinIndicator", "archived": "Rows_archived", "dot": "Rows_dot", "menuOpen": "Rows_menuOpen", "rowQuickActions": "Rows_rowQuickActions", "rowResting": "Rows_rowResting", "timestamp": "Rows_timestamp", "pinnedAction": "Rows_pinnedAction", "dropBefore": "Rows_dropBefore", "dropAfter": "Rows_dropAfter", "hoverContent": "Rows_hoverContent", "hoverTitle": "Rows_hoverTitle", "hoverPath": "Rows_hoverPath", "hoverTime": "Rows_hoverTime", "hoverStatus": "Rows_hoverStatus", "hoverArchived": "Rows_hoverArchived", "iconButton": "Rows_iconButton" };
+var Rows_default = { "projectRow": "Rows_projectRow", "sessionRow": "Rows_sessionRow", "selected": "Rows_selected", "dragPreview": "Rows_dragPreview", "searchResultRow": "Rows_searchResultRow", "searchResultHeading": "Rows_searchResultHeading", "searchResultTitle": "Rows_searchResultTitle", "searchResultMeta": "Rows_searchResultMeta", "searchResultWorkspace": "Rows_searchResultWorkspace", "searchResultSnippet": "Rows_searchResultSnippet", "rowActions": "Rows_rowActions", "title": "Rows_title", "slot": "Rows_slot", "visuallyHidden": "Rows_visuallyHidden", "workspaceIcon": "Rows_workspaceIcon", "folderActive": "Rows_folderActive", "chevron": "Rows_chevron", "folder": "Rows_folder", "arrow": "Rows_arrow", "arrowOpen": "Rows_arrowOpen", "projectText": "Rows_projectText", "renameInput": "Rows_renameInput", "meta": "Rows_meta", "time": "Rows_time", "pinIndicator": "Rows_pinIndicator", "archived": "Rows_archived", "dot": "Rows_dot", "menuOpen": "Rows_menuOpen", "rowQuickActions": "Rows_rowQuickActions", "rowResting": "Rows_rowResting", "timestamp": "Rows_timestamp", "pinnedAction": "Rows_pinnedAction", "dropBefore": "Rows_dropBefore", "dropAfter": "Rows_dropAfter", "hoverContent": "Rows_hoverContent", "hoverTitle": "Rows_hoverTitle", "hoverPath": "Rows_hoverPath", "hoverTime": "Rows_hoverTime", "hoverStatus": "Rows_hoverStatus", "hoverArchived": "Rows_hoverArchived", "iconButton": "Rows_iconButton" };
 
 // packages/lab-sidebar/src/client/plugin/client/rows/Rows.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
@@ -1816,7 +1929,9 @@ function ProjectRow({
   access,
   openWorkspaceMenu,
   useContextMenuTarget,
-  useContextMenu
+  useContextMenu,
+  useWorkspaceIcons,
+  ensureWorkspaceIcon
 }) {
   const { getTriggerProps } = useContextMenu();
   const drag = access.reorder ? offeredDrag : void 0;
@@ -1826,6 +1941,11 @@ function ProjectRow({
   const menuOpen = useContextMenuTarget((target) => target?.kind === "workspace" && target.value.workspaceId === row.workspaceId);
   const dragPreview = (0, import_dsh_client_ui_primitives2.useRowDragPreview)(Rows_default.dragPreview, DRAG_PREVIEW_PROPERTIES);
   const workspaceMenuTarget = row.workspaceId !== void 0 && row.cwd !== void 0 ? { workspaceId: row.workspaceId, path: row.cwd } : void 0;
+  const workspacePath = row.cwd;
+  const iconUrl = useWorkspaceIcons((store) => workspacePath === void 0 ? void 0 : iconFor(store, workspacePath)?.dataUrl);
+  (0, import_react3.useEffect)(() => {
+    if (workspacePath !== void 0) ensureWorkspaceIcon(workspacePath);
+  }, [workspacePath, ensureWorkspaceIcon]);
   const ownRow = /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
     "div",
     {
@@ -1846,7 +1966,7 @@ function ProjectRow({
         if (dragPreview.clear()) drag?.end();
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: clsx_default(Rows_default.slot, Rows_default.folder, active && Rows_default.folderActive), children: row.expanded ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_dsh_client_ui_primitives2.IconFolderOpenRegular, {}) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_dsh_client_ui_primitives2.IconFolderCloseRegular, {}) }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: clsx_default(Rows_default.slot, Rows_default.folder, active && Rows_default.folderActive), children: iconUrl !== void 0 ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: Rows_default.workspaceIcon, src: iconUrl, alt: "", draggable: false }) : row.expanded ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_dsh_client_ui_primitives2.IconFolderOpenRegular, {}) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_dsh_client_ui_primitives2.IconFolderCloseRegular, {}) }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: clsx_default(Rows_default.slot, Rows_default.chevron), children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_dsh_client_ui_primitives2.IconTriangleRightFillRegular, { className: clsx_default(Rows_default.arrow, row.expanded && Rows_default.arrowOpen) }) }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: Rows_default.projectText, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: Rows_default.title, children: label }) }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: Rows_default.rowActions, children: [
@@ -2570,6 +2690,8 @@ function SessionTree({
   openWorkspaceMenu,
   useContextMenuTarget,
   useContextMenu,
+  useWorkspaceIcons,
+  ensureWorkspaceIcon,
   insertWorkspaceBefore,
   nestWorkspaces,
   groupExpansion,
@@ -2783,6 +2905,8 @@ function SessionTree({
                 openWorkspaceMenu,
                 useContextMenu,
                 useContextMenuTarget,
+                useWorkspaceIcons,
+                ensureWorkspaceIcon,
                 useRemoteAccess,
                 useWorkspaceAccess,
                 containsCurrentDescendant: currentAncestors.has(group.key),
@@ -3106,6 +3230,8 @@ function WorkspaceBrowser({
   openWorkspaceMenu,
   useContextMenuTarget,
   useContextMenu,
+  useWorkspaceIcons,
+  ensureWorkspaceIcon,
   t
 }) {
   const home = useHostInfo((info) => info.home);
@@ -3545,6 +3671,8 @@ function WorkspaceBrowser({
         useContextMenu,
         openWorkspaceMenu,
         useContextMenuTarget,
+        useWorkspaceIcons,
+        ensureWorkspaceIcon,
         workspaces: orderedWorkspaces,
         ungroupedSessionIds: orderedUngroupedSessionIds,
         workspaceReady,
@@ -4124,6 +4252,9 @@ var zh = {
   "field.workspaceName": "\u5DE5\u4F5C\u533A\u540D\u79F0",
   "field.sessionName": "\u4F1A\u8BDD\u540D\u79F0",
   "delete.workspace": "\u5220\u9664\u5DE5\u4F5C\u533A",
+  "icon.set": "\u8BBE\u7F6E\u56FE\u6807\u2026",
+  "icon.reset": "\u91CD\u7F6E\u56FE\u6807",
+  "icon.failed": "\u56FE\u6807\u987B\u4E3A 128 KB \u4EE5\u5185\u7684 PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP \u6216 GIF\u3002",
   "delete.desc": "\u5C06\u628A\u201C{name}\u201D\u4ECE\u5DE5\u4F5C\u533A\u5217\u8868\u4E2D\u79FB\u9664\u3002\u6587\u4EF6\u5939\u4E0E\u4F1A\u8BDD\u8BB0\u5F55\u4F1A\u4FDD\u7559\uFF0C\u5176\u4F1A\u8BDD\u5C06\u663E\u793A\u5728\u201C\u672A\u5206\u7EC4\u201D\u4E0B\u3002",
   "delete.pending": "\u6B63\u5728\u5220\u9664\u5DE5\u4F5C\u533A\u2026",
   "menu.fork": "\u5206\u53C9\u4F1A\u8BDD",
@@ -4245,6 +4376,9 @@ var en = {
   "field.workspaceName": "Workspace name",
   "field.sessionName": "Session name",
   "delete.workspace": "Delete workspace",
+  "icon.set": "Set icon\u2026",
+  "icon.reset": "Reset icon",
+  "icon.failed": "Choose a PNG, SVG, ICO, JPEG, WebP, or GIF up to 128 KB.",
   "delete.desc": "This removes \u201C{name}\u201D from the workspace list. The folder and session logs will be kept. Its sessions will appear under Ungrouped.",
   "delete.pending": "Deleting workspace\u2026",
   "menu.fork": "Fork session",
@@ -4366,6 +4500,9 @@ var ja = {
   "field.workspaceName": "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u540D",
   "field.sessionName": "\u30BB\u30C3\u30B7\u30E7\u30F3\u540D",
   "delete.workspace": "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u3092\u524A\u9664",
+  "icon.set": "\u30A2\u30A4\u30B3\u30F3\u3092\u8A2D\u5B9A\u2026",
+  "icon.reset": "\u30A2\u30A4\u30B3\u30F3\u3092\u30EA\u30BB\u30C3\u30C8",
+  "icon.failed": "128 KB \u4EE5\u4E0B\u306E PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP\u3001GIF \u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
   "delete.desc": "\u300C{name}\u300D\u3092\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u4E00\u89A7\u304B\u3089\u524A\u9664\u3057\u307E\u3059\u3002\u30D5\u30A9\u30EB\u30C0\u3068\u30BB\u30C3\u30B7\u30E7\u30F3\u30ED\u30B0\u306F\u4FDD\u6301\u3055\u308C\u307E\u3059\u3002\u3053\u306E\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u306F\u300C\u672A\u5206\u985E\u300D\u306B\u8868\u793A\u3055\u308C\u307E\u3059\u3002",
   "delete.pending": "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u3092\u524A\u9664\u4E2D\u2026",
   "menu.fork": "\u30BB\u30C3\u30B7\u30E7\u30F3\u3092\u30D5\u30A9\u30FC\u30AF",
@@ -4487,6 +4624,9 @@ var es = {
   "field.workspaceName": "Nombre del espacio de trabajo",
   "field.sessionName": "Nombre de la sesi\xF3n",
   "delete.workspace": "Eliminar espacio de trabajo",
+  "icon.set": "Establecer icono\u2026",
+  "icon.reset": "Restablecer icono",
+  "icon.failed": "Elige un PNG, SVG, ICO, JPEG, WebP o GIF de hasta 128 KB.",
   "delete.desc": 'Esto elimina "{name}" de la lista de espacios de trabajo. Se conservar\xE1n los registros de carpetas y sesiones. Sus sesiones aparecer\xE1n en Desagrupadas.',
   "delete.pending": "Eliminando espacio de trabajo\u2026",
   "menu.fork": "Crear una bifurcaci\xF3n de la sesi\xF3n",
@@ -4608,6 +4748,9 @@ var fr = {
   "field.workspaceName": "Nom de l'espace de travail",
   "field.sessionName": "Nom de la s\xE9ance",
   "delete.workspace": "Supprimer l'espace de travail",
+  "icon.set": "D\xE9finir l\u2019ic\xF4ne\u2026",
+  "icon.reset": "R\xE9initialiser l\u2019ic\xF4ne",
+  "icon.failed": "Choisissez un PNG, SVG, ICO, JPEG, WebP ou GIF de 128 Ko maximum.",
   "delete.desc": "Cela supprime \xAB\xA0{name}\xA0\xBB de la liste des espaces de travail. Les journaux de dossiers et de sessions seront conserv\xE9s. Ses sessions appara\xEEtront sous Non group\xE9es.",
   "delete.pending": "Suppression de l'espace de travail\u2026",
   "menu.fork": "Cr\xE9er une branche de la session",
@@ -4729,6 +4872,9 @@ var de = {
   "field.workspaceName": "Name des Arbeitsbereichs",
   "field.sessionName": "Sitzungsname",
   "delete.workspace": "Arbeitsbereich l\xF6schen",
+  "icon.set": "Symbol festlegen\u2026",
+  "icon.reset": "Symbol zur\xFCcksetzen",
+  "icon.failed": "W\xE4hle eine PNG-, SVG-, ICO-, JPEG-, WebP- oder GIF-Datei bis 128 KB.",
   "delete.desc": "Dadurch wird \u201E{name}\u201C aus der Arbeitsbereichsliste entfernt. Die Ordner- und Sitzungsprotokolle werden aufbewahrt. Seine Sitzungen werden unter \u201ENicht gruppiert\u201C angezeigt.",
   "delete.pending": "Arbeitsbereich wird gel\xF6scht\u2026",
   "menu.fork": "Sitzung abzweigen",
@@ -4850,6 +4996,9 @@ var ru = {
   "field.workspaceName": "\u0418\u043C\u044F \u0440\u0430\u0431\u043E\u0447\u0435\u0439 \u043E\u0431\u043B\u0430\u0441\u0442\u0438",
   "field.sessionName": "\u0418\u043C\u044F \u0441\u0435\u0430\u043D\u0441\u0430",
   "delete.workspace": "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0431\u043E\u0447\u0443\u044E \u043E\u0431\u043B\u0430\u0441\u0442\u044C",
+  "icon.set": "\u0417\u0430\u0434\u0430\u0442\u044C \u0437\u043D\u0430\u0447\u043E\u043A\u2026",
+  "icon.reset": "\u0421\u0431\u0440\u043E\u0441\u0438\u0442\u044C \u0437\u043D\u0430\u0447\u043E\u043A",
+  "icon.failed": "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 PNG, SVG, ICO, JPEG, WebP \u0438\u043B\u0438 GIF \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u043C \u0434\u043E 128 \u041A\u0411.",
   "delete.desc": "\u042D\u0442\u043E \u0443\u0434\u0430\u043B\u0438\u0442 \xAB{name}\xBB \u0438\u0437 \u0441\u043F\u0438\u0441\u043A\u0430 \u0440\u0430\u0431\u043E\u0447\u0435\u0439 \u043E\u0431\u043B\u0430\u0441\u0442\u0438. \u0416\u0443\u0440\u043D\u0430\u043B\u044B \u043F\u0430\u043F\u043E\u043A \u0438 \u0441\u0435\u0430\u043D\u0441\u043E\u0432 \u0431\u0443\u0434\u0443\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u044B. \u0415\u0433\u043E \u0441\u0435\u0430\u043D\u0441\u044B \u043F\u043E\u044F\u0432\u044F\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 \xAB\u0420\u0430\u0437\u0433\u0440\u0443\u043F\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u043E\xBB.",
   "delete.pending": "\u0423\u0434\u0430\u043B\u0435\u043D\u0438\u0435 \u0440\u0430\u0431\u043E\u0447\u0435\u0439 \u043E\u0431\u043B\u0430\u0441\u0442\u0438\u2026",
   "menu.fork": "\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u043E\u0442\u0432\u0435\u0442\u0432\u043B\u0435\u043D\u0438\u0435 \u0441\u0435\u0430\u043D\u0441\u0430",
@@ -4971,6 +5120,9 @@ var pt = {
   "field.workspaceName": "Nome do espa\xE7o de trabalho",
   "field.sessionName": "Nome da sess\xE3o",
   "delete.workspace": "Excluir espa\xE7o de trabalho",
+  "icon.set": "Definir \xEDcone\u2026",
+  "icon.reset": "Redefinir \xEDcone",
+  "icon.failed": "Escolha um PNG, SVG, ICO, JPEG, WebP ou GIF de at\xE9 128 KB.",
   "delete.desc": "Isso remove \u201C{name}\u201D da lista de espa\xE7os de trabalho. A pasta e os logs de sess\xE3o ser\xE3o mantidos. Suas sess\xF5es aparecer\xE3o em Desagrupado.",
   "delete.pending": "Excluindo espa\xE7o de trabalho\u2026",
   "menu.fork": "Bifurcar sess\xE3o",
@@ -5042,6 +5194,229 @@ var pt = {
   "time.ago": "{t} atr\xE1s"
 };
 
+// packages/lab-sidebar/src/client/icon-picker.ts
+var ACCEPT = "image/png,image/svg+xml,image/x-icon,image/vnd.microsoft.icon,image/jpeg,image/webp,image/gif,.ico";
+async function pickIconDataUrl() {
+  const file = await new Promise((resolve) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ACCEPT;
+    input.addEventListener("change", () => {
+      resolve(input.files?.[0]);
+    }, { once: true });
+    input.addEventListener("cancel", () => {
+      resolve(void 0);
+    }, { once: true });
+    input.click();
+  });
+  if (file === void 0) return void 0;
+  if (file.size > MAX_ICON_BYTES) throw new Error(`icon is ${file.size} bytes, over the ${MAX_ICON_BYTES} byte limit`);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      if (typeof reader.result === "string") resolve(reader.result);
+      else reject(new Error("icon could not be read as a data URL"));
+    });
+    reader.addEventListener("error", () => {
+      reject(reader.error ?? new Error("icon could not be read"));
+    });
+    reader.readAsDataURL(file);
+  });
+}
+
+// packages/lab-sidebar/src/client/detect.ts
+var MIME = {
+  svg: "image/svg+xml",
+  png: "image/png",
+  ico: "image/x-icon",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  gif: "image/gif"
+};
+var HTML_ENTRIES = ["index.html", "public/index.html", "src/index.html"];
+var CONVENTIONAL_ICONS = [
+  "favicon.svg",
+  "favicon.png",
+  "favicon.ico",
+  "public/favicon.svg",
+  "public/favicon.png",
+  "public/favicon.ico",
+  "app/icon.svg",
+  "app/icon.png",
+  "app/favicon.ico",
+  "src/app/icon.svg",
+  "src/app/icon.png",
+  "src/app/favicon.ico",
+  "static/favicon.svg",
+  "static/favicon.png",
+  "static/favicon.ico",
+  "assets/icon.png",
+  "icon.svg",
+  "icon.png",
+  "logo.svg",
+  "logo.png"
+];
+async function detectIcon(root, read) {
+  const tried = /* @__PURE__ */ new Set();
+  for (const relative of [...await declaredIcons(root, read), ...CONVENTIONAL_ICONS]) {
+    if (tried.has(relative)) continue;
+    tried.add(relative);
+    const icon = await iconAt(root, relative, read);
+    if (icon !== void 0) return icon;
+  }
+  return void 0;
+}
+async function declaredIcons(root, read) {
+  const found = [];
+  for (const entry of HTML_ENTRIES) {
+    const html = await readText(root, entry, read);
+    if (html === void 0) continue;
+    const base = entry.includes("/") ? entry.slice(0, entry.lastIndexOf("/")) : "";
+    for (const href of linkIconHrefs(html)) found.push(...resolveHref(href, base));
+  }
+  const manifest = await readText(root, "package.json", read);
+  if (manifest !== void 0) {
+    const icon = packageIcon(manifest);
+    if (icon !== void 0) found.push(...resolveHref(icon, ""));
+  }
+  return found;
+}
+function linkIconHrefs(html) {
+  const hrefs = [];
+  for (const [tag] of html.matchAll(/<link\b[^>]*>/giu)) {
+    const rel = /\brel\s*=\s*["']([^"']*)["']/iu.exec(tag)?.[1]?.toLowerCase() ?? "";
+    if (!rel.split(/\s+/u).some((token) => token === "icon" || token === "apple-touch-icon")) continue;
+    const href = /\bhref\s*=\s*["']([^"']+)["']/iu.exec(tag)?.[1];
+    if (href !== void 0) hrefs.push(href);
+  }
+  return hrefs;
+}
+function packageIcon(text) {
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return void 0;
+  }
+  if (typeof parsed !== "object" || parsed === null || !("icon" in parsed)) return void 0;
+  return typeof parsed.icon === "string" && parsed.icon !== "" ? parsed.icon : void 0;
+}
+function resolveHref(href, baseDir) {
+  const clean = href.replace(/%PUBLIC_URL%/gu, "").replace(/[?#].*$/u, "").trim();
+  if (clean === "" || /^[a-z][a-z0-9+.-]*:/iu.test(clean) || clean.startsWith("//")) return [];
+  if (clean.startsWith("/")) {
+    const fromRoot = normalize(clean.slice(1));
+    return fromRoot === void 0 ? [] : [fromRoot, `public/${fromRoot}`];
+  }
+  const relative = normalize(baseDir === "" ? clean : `${baseDir}/${clean}`);
+  return relative === void 0 ? [] : [relative];
+}
+function normalize(path) {
+  const parts = [];
+  for (const part of path.split("/")) {
+    if (part === "" || part === ".") continue;
+    if (part === "..") {
+      if (parts.length === 0) return void 0;
+      parts.pop();
+    } else {
+      parts.push(part);
+    }
+  }
+  return parts.length === 0 ? void 0 : parts.join("/");
+}
+async function iconAt(root, relative, read) {
+  const extension = relative.slice(relative.lastIndexOf(".") + 1).toLowerCase();
+  const mime = MIME[extension];
+  if (mime === void 0) return void 0;
+  const bytes = await read(join(root, relative));
+  if (bytes === void 0 || bytes.length === 0 || bytes.length > MAX_ICON_BYTES) return void 0;
+  if (mime === "image/svg+xml" && !new TextDecoder().decode(bytes).includes("<svg")) return void 0;
+  return { dataUrl: `data:${mime};base64,${base64(bytes)}`, source: relative };
+}
+async function readText(root, relative, read) {
+  const bytes = await read(join(root, relative));
+  return bytes === void 0 ? void 0 : new TextDecoder().decode(bytes);
+}
+function join(root, relative) {
+  return `${root.replace(/[\\/]+$/u, "")}/${relative}`;
+}
+function base64(bytes) {
+  let binary = "";
+  for (let index = 0; index < bytes.length; index += 32768) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + 32768));
+  }
+  return btoa(binary);
+}
+
+// packages/lab-sidebar/src/client/workspace-icons.ts
+var NEGATIVE_RETRY_MS = 24 * 60 * 60 * 1e3;
+var CONCURRENCY = 2;
+function createWorkspaceIcons(deps) {
+  const now = deps.now ?? Date.now;
+  let store = readIconStore(deps.storage);
+  const listeners = /* @__PURE__ */ new Set();
+  const pending = /* @__PURE__ */ new Map();
+  let running = 0;
+  const waiting = [];
+  const commit = (next) => {
+    store = writeIconStore(next, deps.storage);
+    for (const listener of listeners) listener();
+  };
+  const acquire = async () => {
+    if (running >= CONCURRENCY) await new Promise((resolve) => {
+      waiting.push(resolve);
+    });
+    running += 1;
+  };
+  const release = () => {
+    running -= 1;
+    waiting.shift()?.();
+  };
+  const detect = async (path) => {
+    const sessionId = deps.sessionFor(path);
+    if (sessionId === void 0) return;
+    await acquire();
+    try {
+      const icon = await detectIcon(path, (file) => deps.read(sessionId, file));
+      const stamp = new Date(now()).toISOString();
+      commit(icon === void 0 ? setNegativeIcon(store, path, new Date(now() + NEGATIVE_RETRY_MS).toISOString(), stamp) : setDetectedIcon(store, path, icon.dataUrl, icon.source, stamp));
+    } finally {
+      release();
+    }
+  };
+  const ensure = (path) => {
+    if (iconFor(store, path, now()) !== void 0) return Promise.resolve();
+    const inFlight = pending.get(path);
+    if (inFlight !== void 0) return inFlight;
+    const job = detect(path).finally(() => {
+      pending.delete(path);
+    });
+    pending.set(path, job);
+    return job;
+  };
+  return {
+    getSnapshot: () => store,
+    subscribe: (listener) => {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+    ensure,
+    upload: (path, dataUrl) => {
+      const next = setUploadedIcon(store, path, dataUrl, new Date(now()).toISOString());
+      if (next === store) return false;
+      commit(next);
+      return true;
+    },
+    reset: (path) => {
+      commit(clearIcon(store, path));
+      return ensure(path);
+    }
+  };
+}
+
 // packages/lab-sidebar/src/client/plugin/client/index.ts
 var NS = "workspace";
 var inject = [
@@ -5052,6 +5427,7 @@ var inject = [
   "locale",
   "remote",
   "remote.directoryPicker",
+  "remote.workspaceFiles",
   "layout",
   "shortcuts",
   "remoteAccess"
@@ -5075,6 +5451,26 @@ function apply(ctx) {
     viewInstance.actions,
     notify
   );
+  const workspaceIcons = createWorkspaceIcons({
+    storage: globalThis.localStorage,
+    read: async (sessionId, absolutePath) => {
+      const result = await ctx.remote.workspaceFiles.readBytes(
+        sessionId,
+        absolutePath,
+        { range: { length: MAX_ICON_BYTES + 1 } }
+      );
+      return result.ok ? result.value.data : void 0;
+    },
+    sessionFor: (path) => {
+      const own = workspaces.list.getSnapshot().items.find((row) => row.path === path)?.sessionIds[0];
+      return own ?? sessions.list.getSnapshot().ids[0];
+    }
+  });
+  const ensureWorkspaceIcon = (path) => {
+    workspaceIcons.ensure(path).catch((reason) => {
+      console.warn("[lab-sidebar] workspace icon detection failed:", path, reason);
+    });
+  };
   ctx.slots.provideRoot({
     hooks: { workspaces: workspaces.list },
     keyedHooks: {
@@ -5232,7 +5628,9 @@ function apply(ctx) {
       "workspace.archive": import_dsh_client_ui_primitives9.IconArchiveOutlineRegular,
       "workspace.unarchive": import_dsh_client_ui_primitives9.IconUnarchiveOutlineRegular,
       "workspace.fork": import_dsh_client_ui_primitives9.IconBranchOutlineRegular,
-      "workspace.copy": import_dsh_client_ui_primitives9.IconCopyOutlineRegular
+      "workspace.copy": import_dsh_client_ui_primitives9.IconCopyOutlineRegular,
+      "workspace.icon.set": import_dsh_client_ui_primitives9.IconEditOutlineRegular,
+      "workspace.icon.reset": import_dsh_client_ui_primitives9.IconRefreshOutlineRegular
     })) yield ctx.slots.register({ name: "contextMenu.icon", key }, Icon);
   });
   ctx.effect(() => ctx.contextMenus.register({
@@ -5258,6 +5656,32 @@ function apply(ctx) {
       }
     }] : []
   }), "workspace: delete menu action");
+  ctx.effect(() => ctx.contextMenus.register({
+    id: "workspace.icon",
+    target: "workspace",
+    order: 200,
+    resolve: ({ path }) => {
+      const t = ctx.locale.bind(NS);
+      return [
+        {
+          id: "icon.set",
+          label: t("icon.set"),
+          icon: { key: "workspace.icon.set" },
+          failureLabel: t("icon.failed"),
+          run: async () => {
+            const dataUrl = await pickIconDataUrl();
+            if (dataUrl !== void 0 && !workspaceIcons.upload(path, dataUrl)) throw new Error("unsupported icon image");
+          }
+        },
+        {
+          id: "icon.reset",
+          label: t("icon.reset"),
+          icon: { key: "workspace.icon.reset" },
+          run: () => workspaceIcons.reset(path)
+        }
+      ];
+    }
+  }), "lab-sidebar: workspace icon menu actions");
   const browserInjected = () => ({
     openWorkspaceMenu: (workspaceId, path, displayTitle2, point, mode) => {
       const target = ctx.contextMenus.active.getSnapshot();
@@ -5301,11 +5725,13 @@ function apply(ctx) {
     requestAddWorkspace: shortcutControls.add,
     closeAddWorkspace: shortcutControls.closeAdd,
     setDirectoryBusy: shortcutControls.directoryBusy,
+    ensureWorkspaceIcon,
     hooks: {
       workspaceActionRequest,
       contextMenuTarget: ctx.contextMenus.active,
       directoryFlow: browserFlowSource,
       hostInfo,
+      workspaceIcons,
       workspaceShortcuts: shortcutControls.state,
       shortcuts: ctx.shortcuts.catalog
     }

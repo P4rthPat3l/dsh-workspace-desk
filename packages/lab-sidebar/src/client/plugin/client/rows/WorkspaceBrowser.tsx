@@ -253,6 +253,7 @@ function workspaceGroupHalf(e: { clientY: number; currentTarget: HTMLElement }):
 type SessionTreeProps = Pick<
   WorkspaceBrowserProps,
   'useSessionStatus' | 'startSession' | 'open' | 'openSessionMenu' | 'openWorkspaceMenu' | 'useContextMenuTarget' | 'useContextMenu'
+  | 'useWorkspaceIcons' | 'ensureWorkspaceIcon'
   | 'insertWorkspaceBefore' | 't' | 'usePanelInfo'
   | 'useRemoteAccess' | 'useSessionAccess' | 'useWorkspaceAccess'
 > & PropsRenderSlots<
@@ -317,6 +318,7 @@ function SessionTree({
   workspaceReady, animationResetKey, usePanelInfo, useRemoteAccess, useSessionAccess, useWorkspaceAccess,
   onSessionRenameRequest,
   renderSlot, openSessionMenu, openWorkspaceMenu, useContextMenuTarget, useContextMenu,
+  useWorkspaceIcons, ensureWorkspaceIcon,
   insertWorkspaceBefore,
   nestWorkspaces, groupExpansion, setGroupExpanded,
   setSessionOrder, home, t,
@@ -555,6 +557,7 @@ function SessionTree({
           newShortcut={shortcuts.find(row => row.id === 'session.new')}
           group={group}
           openWorkspaceMenu={openWorkspaceMenu} useContextMenu={useContextMenu} useContextMenuTarget={useContextMenuTarget}
+          useWorkspaceIcons={useWorkspaceIcons} ensureWorkspaceIcon={ensureWorkspaceIcon}
           useRemoteAccess={useRemoteAccess}
           useWorkspaceAccess={useWorkspaceAccess}
           containsCurrentDescendant={currentAncestors.has(group.key)}
@@ -928,6 +931,7 @@ export function WorkspaceBrowser({
   closeAddWorkspace,
   setDirectoryBusy,
   renderSlot, openSessionMenu, openWorkspaceMenu, useContextMenuTarget, useContextMenu,
+  useWorkspaceIcons, ensureWorkspaceIcon,
   t,
 }: WorkspaceBrowserProps) {
   const home = useHostInfo(info => info.home)
@@ -1408,6 +1412,7 @@ export function WorkspaceBrowser({
                 openSessionMenu={openSessionMenu} useContextMenu={useContextMenu}
                 openWorkspaceMenu={openWorkspaceMenu}
                 useContextMenuTarget={useContextMenuTarget}
+                useWorkspaceIcons={useWorkspaceIcons} ensureWorkspaceIcon={ensureWorkspaceIcon}
                 workspaces={orderedWorkspaces}
                 ungroupedSessionIds={orderedUngroupedSessionIds}
                 workspaceReady={workspaceReady}

@@ -1,4 +1,4 @@
-import { IconEditOutlineRegular, IconTrashOutlineRegular, IconPinFillRegular, IconPinOutlineRegular, IconUnarchiveOutlineRegular, IconArchiveOutlineRegular, IconBranchOutlineRegular, IconCopyOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
+import { IconEditOutlineRegular, IconTrashOutlineRegular, IconPinFillRegular, IconPinOutlineRegular, IconUnarchiveOutlineRegular, IconArchiveOutlineRegular, IconBranchOutlineRegular, IconCopyOutlineRegular, IconRefreshOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
 import { SessionMenu } from './session-actions/SessionMenu.tsx'
 import type {} from '@deepseek-ai/dsh-client-ui-context-menu/client'
 /**
@@ -58,6 +58,9 @@ import { RowActionToast } from './session-actions/RowActionToast.tsx'
 import { registerToasts } from './toast/register.ts'
 import { WorkspacePicker } from './WorkspacePicker.tsx'
 import { en, ja, es, fr, de, ru, pt, zh, type WorkspaceKey } from './locales.ts'
+import { MAX_ICON_BYTES } from '../../icons.ts'
+import { pickIconDataUrl } from '../../icon-picker.ts'
+import { createWorkspaceIcons } from '../../workspace-icons.ts'
 
 export type { StartSessionOptions, UiWorkspace } from './navigation.ts'
 export type {
@@ -101,7 +104,7 @@ const NS = 'workspace'
  * declaration through `slots.inject()` instead of assuming order.
  */
 export const inject = ['contextMenus',
-  'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'layout', 'shortcuts', 'remoteAccess',
+  'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'remote.workspaceFiles', 'layout', 'shortcuts', 'remoteAccess',
 ]
 
 /**
@@ -125,6 +128,26 @@ export function apply(ctx: Context): void {
   const uiWorkspace = new UiWorkspaceService(
     ctx, ctx.remote.directoryPicker, workspaces, sessions, viewInstance.actions, notify,
   )
+  // LabSideBar: workspace icons. A session's file scope reads absolute paths,
+  // so a workspace without sessions borrows any session to read its files.
+  const workspaceIcons = createWorkspaceIcons({
+    storage: globalThis.localStorage,
+    read: async (sessionId, absolutePath) => {
+      const result = await ctx.remote.workspaceFiles.readBytes(
+        sessionId, absolutePath, { range: { length: MAX_ICON_BYTES + 1 } },
+      )
+      return result.ok ? result.value.data : undefined
+    },
+    sessionFor: (path) => {
+      const own = workspaces.list.getSnapshot().items.find(row => row.path === path)?.sessionIds[0]
+      return own ?? sessions.list.getSnapshot().ids[0]
+    },
+  })
+  const ensureWorkspaceIcon = (path: string): void => {
+    workspaceIcons.ensure(path).catch((reason: unknown) => {
+      console.warn('[lab-sidebar] workspace icon detection failed:', path, reason)
+    })
+  }
   ctx.slots.provideRoot({
     hooks: { workspaces: workspaces.list },
     keyedHooks: {
@@ -274,6 +297,7 @@ export function apply(ctx: Context): void {
       'workspace.pin': IconPinOutlineRegular, 'workspace.unpin': IconPinFillRegular,
       'workspace.archive': IconArchiveOutlineRegular, 'workspace.unarchive': IconUnarchiveOutlineRegular,
       'workspace.fork': IconBranchOutlineRegular, 'workspace.copy': IconCopyOutlineRegular,
+      'workspace.icon.set': IconEditOutlineRegular, 'workspace.icon.reset': IconRefreshOutlineRegular,
     })) yield ctx.slots.register({ name: 'contextMenu.icon', key }, Icon)
   })
   ctx.effect(() => ctx.contextMenus.register({
@@ -287,6 +311,21 @@ export function apply(ctx: Context): void {
       ? [{ id: 'delete', label: ctx.locale.bind(NS)('delete.workspace'), icon: { key: 'workspace.delete' }, danger: true, separatorBefore: true,
         run: () => { requestWorkspaceAction(workspaceId, displayTitle, 'delete') } }] : [],
   }), 'workspace: delete menu action')
+  ctx.effect(() => ctx.contextMenus.register({
+    id: 'workspace.icon', target: 'workspace', order: 200,
+    resolve: ({ path }) => {
+      const t = ctx.locale.bind(NS)
+      return [
+        { id: 'icon.set', label: t('icon.set'), icon: { key: 'workspace.icon.set' }, failureLabel: t('icon.failed'),
+          run: async () => {
+            const dataUrl = await pickIconDataUrl()
+            if (dataUrl !== undefined && !workspaceIcons.upload(path, dataUrl)) throw new Error('unsupported icon image')
+          } },
+        { id: 'icon.reset', label: t('icon.reset'), icon: { key: 'workspace.icon.reset' },
+          run: () => workspaceIcons.reset(path) },
+      ]
+    },
+  }), 'lab-sidebar: workspace icon menu actions')
   const browserInjected = (): WorkspaceBrowserInjected => ({
     openWorkspaceMenu: (workspaceId, path, displayTitle, point, mode) => {
       const target = ctx.contextMenus.active.getSnapshot()
@@ -318,7 +357,9 @@ export function apply(ctx: Context): void {
     requestAddWorkspace: shortcutControls.add,
     closeAddWorkspace: shortcutControls.closeAdd,
     setDirectoryBusy: shortcutControls.directoryBusy,
+    ensureWorkspaceIcon,
     hooks: { workspaceActionRequest, contextMenuTarget: ctx.contextMenus.active, directoryFlow: browserFlowSource, hostInfo,
+      workspaceIcons,
       workspaceShortcuts: shortcutControls.state, shortcuts: ctx.shortcuts.catalog },
   })
   const pickerInjected = (): WorkspacePickerInjected => ({

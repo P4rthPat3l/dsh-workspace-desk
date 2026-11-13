@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  capStore, clearIcon, dataUrlBytes, emptyIconStore, fitsIconLimit, hueFor,
-  iconFor, initialsOf, isIconDataUrl, parseIconStore, setNegativeIcon,
+  capStore, clearIcon, dataUrlBytes, emptyIconStore, fitsIconLimit,
+  iconFor, isIconDataUrl, parseIconStore, setNegativeIcon,
   setUploadedIcon, ICON_KEY,
 } from '../src/client/icons.ts';
 
@@ -71,12 +71,13 @@ test('the store keeps at most 64 records, newest first', () => {
   assert.equal(capped.entries['/p69']?.kind, 'uploaded');
 });
 
-test('initials and hue are stable and readable', () => {
-  assert.equal(initialsOf('my-app', '/work/my-app'), 'MA');
-  assert.equal(initialsOf('', '/work/solo'), 'S');
-  assert.equal(initialsOf('  '), '?');
-  assert.equal(hueFor('/work/app'), hueFor('/work/app'));
-  assert.ok(hueFor('/work/app') >= 0 && hueFor('/work/app') < 360);
+test('a store from another version is dropped', () => {
+  const raw = JSON.stringify({ version: 2, entries: { '/a': { kind: 'uploaded', dataUrl: PNG, updatedAt: '2026-01-01T00:00:00.000Z' } } });
+  assert.deepEqual(parseIconStore(raw).entries, {});
+});
+
+test('ICO data URLs are accepted', () => {
+  assert.equal(isIconDataUrl('data:image/x-icon;base64,AAABAA=='), true);
 });
 
 test('data URL byte length matches base64 decoding', () => {

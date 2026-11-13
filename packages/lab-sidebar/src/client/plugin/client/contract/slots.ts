@@ -34,6 +34,7 @@
  * the row's Session identity; a Session binding would activate and retain
  * every listed Session.
  */
+import type { IconStore } from '../../../icons.ts'
 import type { ContextMenuTarget } from '@deepseek-ai/dsh-client-ui-context-menu/client'
 import type {
   HostObservable, InjectFace, PropsHooks, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore, SlotHookFactory,
@@ -245,11 +246,15 @@ export type WorkspaceBrowserInjected = {
   openWorkspaceMenu: (workspaceId: WorkspaceId, path: string, displayTitle: string, point: { x: number; y: number }, mode?: 'toggle') => void
   /** Dismiss the settled Workspace dialog. */
   settleWorkspaceAction: () => void
+  /** Detect a workspace icon unless one is already decided. LabSideBar addition. */
+  ensureWorkspaceIcon: (workspacePath: string) => void
   /** Open actions for the clicked Session without selecting it. */
   openSessionMenu: (sessionId: SessionId, displayTitle: string, point: { x: number; y: number }, mode?: 'toggle') => void
   hooks: DirectoryPickingInjected['hooks'] & {
     workspaceActionRequest: HostObservable<WorkspaceActionRequest | null>
     contextMenuTarget: HostObservable<ContextMenuTarget | null>
+    /** Workspace icon records keyed by workspace path. LabSideBar addition. */
+    workspaceIcons: HostObservable<IconStore>
     /**
      * Fixed Host facts, reached through a hook rather than injected as values:
      * the renderer memoizes an entry's inject result for the registration's

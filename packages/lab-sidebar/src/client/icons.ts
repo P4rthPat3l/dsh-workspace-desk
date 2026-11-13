@@ -39,7 +39,7 @@ export function emptyIconStore(): IconStore {
 /** Whether a string is an accepted base64 image data URL. */
 export function isIconDataUrl(value: unknown): value is string {
   return typeof value === 'string'
-    && /^data:image\/(png|jpeg|webp|gif|svg\+xml);base64,[A-Za-z0-9+/=]+$/u.test(value);
+    && /^data:image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon);base64,[A-Za-z0-9+/=]+$/u.test(value);
 }
 
 /** Decoded byte length of a base64 data URL, or 0 when malformed. */
@@ -59,19 +59,19 @@ export function fitsIconLimit(value: string, maxBytes = MAX_ICON_BYTES): boolean
 /** Validate one parsed record. Returns undefined for records that cannot render. */
 export function parseRecord(value: unknown): IconRecord | undefined {
   if (typeof value !== 'object' || value === null) return undefined;
-  const record = value as Record<string, unknown>;
+  const record: { readonly [key: string]: unknown } = { ...value };
   const kind = record.kind;
   if (kind !== 'uploaded' && kind !== 'detected' && kind !== 'negative' && kind !== 'invalid') return undefined;
   if (typeof record.updatedAt !== 'string' || record.updatedAt === '') return undefined;
+  const dataUrl = isIconDataUrl(record.dataUrl) ? record.dataUrl : undefined;
   if (kind === 'uploaded' || kind === 'detected') {
-    if (!isIconDataUrl(record.dataUrl)) return undefined;
-    if (dataUrlBytes(record.dataUrl) > MAX_ICON_BYTES) return undefined;
+    if (dataUrl === undefined || dataUrlBytes(dataUrl) > MAX_ICON_BYTES) return undefined;
   }
   const source = typeof record.source === 'string' ? record.source : undefined;
   const retryAfter = typeof record.retryAfter === 'string' ? record.retryAfter : undefined;
   return {
     kind,
-    ...(record.dataUrl === undefined ? {} : { dataUrl: record.dataUrl as string }),
+    ...(dataUrl === undefined ? {} : { dataUrl }),
     ...(source === undefined ? {} : { source }),
     updatedAt: record.updatedAt,
     ...(retryAfter === undefined ? {} : { retryAfter }),
@@ -87,11 +87,14 @@ export function parseIconStore(raw: string | null): IconStore {
   } catch {
     return emptyIconStore();
   }
-  if (typeof parsed !== 'object' || parsed === null) return emptyIconStore();
-  const entries = (parsed as { entries?: unknown }).entries;
+  // A store from another version is dropped rather than misread.
+  if (typeof parsed !== 'object' || parsed === null || !('version' in parsed) || parsed.version !== 1) {
+    return emptyIconStore();
+  }
+  const entries = 'entries' in parsed ? parsed.entries : undefined;
   if (typeof entries !== 'object' || entries === null) return emptyIconStore();
   const next: Record<string, IconRecord> = {};
-  for (const [path, value] of Object.entries(entries as Record<string, unknown>)) {
+  for (const [path, value] of Object.entries(entries)) {
     const record = parseRecord(value);
     if (record !== undefined) next[path] = record;
   }
@@ -142,6 +145,18 @@ export function setUploadedIcon(
   return writeInMemory(store, path, { kind: 'uploaded', dataUrl, updatedAt: now });
 }
 
+/** Record an icon found in the workspace files. */
+export function setDetectedIcon(
+  store: IconStore,
+  path: string,
+  dataUrl: string,
+  source: string,
+  now = new Date().toISOString(),
+): IconStore {
+  if (!fitsIconLimit(dataUrl)) return store;
+  return writeInMemory(store, path, { kind: 'detected', dataUrl, source, updatedAt: now });
+}
+
 /** Record a failed or empty detection with a retry horizon. */
 export function setNegativeIcon(
   store: IconStore,
@@ -168,38 +183,6 @@ export function iconFor(store: IconStore, path: string, now = Date.now()): IconR
   }
   if (record.kind === 'negative') return undefined;
   return record;
-}
-
-/** Initials for a fallback tile: two letters for Latin text, one glyph otherwise. */
-export function initialsOf(label: string, fallbackPath = ''): string {
-  const source = label.trim() !== '' ? label.trim() : basename(fallbackPath);
-  if (source === '') return '?';
-  const words = source.split(/[\s._/-]+/u).filter(word => word !== '');
-  const letters = words.length >= 2
-    ? [firstGlyph(words[0]), firstGlyph(words[words.length - 1])]
-    : [firstGlyph(words[0] ?? source)];
-  return letters.join('').toUpperCase();
-}
-
-/** Stable tile hue from the workspace path. */
-export function hueFor(path: string): number {
-  let hash = 0;
-  for (let index = 0; index < path.length; index += 1) {
-    hash = (hash * 31 + path.charCodeAt(index)) | 0;
-  }
-  return Math.abs(hash) % 360;
-}
-
-/** Final path segment. */
-export function basename(path: string): string {
-  const trimmed = path.replace(/[\\/]+$/u, '');
-  const parts = trimmed.split(/[\\/]/u);
-  return parts[parts.length - 1] ?? '';
-}
-
-function firstGlyph(word: string): string {
-  const glyph = Array.from(word)[0] ?? '';
-  return glyph;
 }
 
 function writeInMemory(store: IconStore, path: string, record: IconRecord): IconStore {

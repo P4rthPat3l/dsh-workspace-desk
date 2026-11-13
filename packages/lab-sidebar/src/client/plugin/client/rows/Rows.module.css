@@ -148,6 +148,13 @@
   white-space: nowrap;
 }
 
+.workspaceIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  border-radius: 3px;
+}
+
 .folderActive {
   color: var(--dsw-alias-state-business-primary);
 }
