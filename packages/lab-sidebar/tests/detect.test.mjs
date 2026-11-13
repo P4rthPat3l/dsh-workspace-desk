@@ -5,6 +5,7 @@ import { createWorkspaceIcons, NEGATIVE_RETRY_MS } from '../src/client/workspace
 import { MAX_ICON_BYTES } from '../src/client/icons.ts';
 
 const ROOT = '/w/app';
+const UPLOAD = 'data:image/png;base64,iVBORw0KGgo=';
 const bytes = text => new TextEncoder().encode(text);
 const SVG = bytes('<svg xmlns="http://www.w3.org/2000/svg"/>');
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
@@ -15,11 +16,6 @@ function fakeFiles(files) {
   const asked = [];
   const read = async (path) => { asked.push(path); return files[path]; };
   return { read, asked };
-}
-
-function memoryStorage() {
-  const data = new Map();
-  return { getItem: key => data.get(key) ?? null, setItem: (key, value) => { data.set(key, value); } };
 }
 
 test('AC-003: a workspace with favicon.svg gets that icon', async () => {
@@ -52,7 +48,7 @@ test('AC-004: a workspace with no icon files detects nothing', async () => {
   assert.equal(await detectIcon(ROOT, read), undefined);
 });
 
-test('a file over the icon limit is skipped', async () => {
+test('a file over the 1 MiB source limit is skipped', async () => {
   const { read } = fakeFiles({
     [`${ROOT}/favicon.png`]: new Uint8Array(MAX_ICON_BYTES + 1),
     [`${ROOT}/favicon.ico`]: ICO,
@@ -80,10 +76,9 @@ test('only icon links are read from HTML', () => {
 });
 
 test('AC-004: no icon stores one negative record and does not retry before the horizon', async () => {
-  const storage = memoryStorage();
   let clock = Date.UTC(2026, 10, 13);
   const { read, asked } = fakeFiles({});
-  const icons = createWorkspaceIcons({ storage, read: (_id, path) => read(path), sessionFor: () => 's1', now: () => clock });
+  const icons = createWorkspaceIcons({ read: (_id, path) => read(path), sessionFor: () => 's1', now: () => clock });
   await icons.ensure(ROOT);
   assert.equal(icons.getSnapshot().entries[ROOT]?.kind, 'negative');
   const firstRun = asked.length;
@@ -96,7 +91,7 @@ test('AC-004: no icon stores one negative record and does not retry before the h
 
 test('AC-003: concurrent rows for one workspace share one detection run', async () => {
   const { read, asked } = fakeFiles({ [`${ROOT}/favicon.svg`]: SVG });
-  const icons = createWorkspaceIcons({ storage: memoryStorage(), read: (_id, path) => read(path), sessionFor: () => 's1' });
+  const icons = createWorkspaceIcons({ read: (_id, path) => read(path), sessionFor: () => 's1' });
   let notified = 0;
   icons.subscribe(() => { notified += 1; });
   await Promise.all([icons.ensure(ROOT), icons.ensure(ROOT)]);
@@ -105,42 +100,33 @@ test('AC-003: concurrent rows for one workspace share one detection run', async 
   assert.equal(notified, 1);
 });
 
-test('AC-005: an upload survives a reload of the store', () => {
-  const storage = memoryStorage();
-  const deps = { storage, read: async () => undefined, sessionFor: () => 's1' };
-  const url = 'data:image/png;base64,iVBORw0KGgo=';
-  assert.equal(createWorkspaceIcons(deps).upload(ROOT, url), true);
-  assert.equal(createWorkspaceIcons(deps).getSnapshot().entries[ROOT]?.dataUrl, url);
-});
-
-test('AC-006: an oversized upload is refused and storage is unchanged', () => {
-  const storage = memoryStorage();
-  const icons = createWorkspaceIcons({ storage, read: async () => undefined, sessionFor: () => 's1' });
-  const big = `data:image/png;base64,${'A'.repeat(Math.ceil((MAX_ICON_BYTES + 10) * 4 / 3))}`;
-  assert.equal(icons.upload(ROOT, big), false);
-  assert.equal(storage.getItem('dsh.lab.icons.v1'), null);
-});
-
 test('reset drops an upload and detects again', async () => {
   const { read } = fakeFiles({ [`${ROOT}/favicon.svg`]: SVG });
-  const icons = createWorkspaceIcons({ storage: memoryStorage(), read: (_id, path) => read(path), sessionFor: () => 's1' });
-  icons.upload(ROOT, 'data:image/png;base64,iVBORw0KGgo=');
+  let saved = UPLOAD;
+  const icons = createWorkspaceIcons({
+    read: (_id, path) => read(path),
+    sessionFor: () => 's1',
+    load: async () => saved,
+    save: async () => {},
+    remove: async () => { saved = undefined; },
+  });
+  assert.equal(await icons.save(ROOT, UPLOAD), true);
   await icons.reset(ROOT);
   assert.equal(icons.getSnapshot().entries[ROOT]?.kind, 'detected');
 });
 
 test('a workspace with no readable session waits without storing a record', async () => {
-  const icons = createWorkspaceIcons({ storage: memoryStorage(), read: async () => undefined, sessionFor: () => undefined });
+  const icons = createWorkspaceIcons({ read: async () => undefined, sessionFor: () => undefined });
   await icons.ensure(ROOT);
   assert.equal(icons.getSnapshot().entries[ROOT], undefined);
 });
 
-test('AC-003: a file whose bytes are not the image its extension claims is skipped', async () => {
+test('a file whose bytes are not the image its extension claims is skipped', async () => {
   const { read } = fakeFiles({ [`${ROOT}/favicon.png`]: bytes('this is text, not a png') });
   assert.equal(await detectIcon(ROOT, read), undefined);
 });
 
-test('AC-007: declared icons are capped so one HTML file cannot fan out reads', async () => {
+test('declared icons are capped so one HTML file cannot fan out reads', async () => {
   const links = Array.from({ length: 40 }, (_, index) => `<link rel="icon" href="/i${index}.png">`).join('');
   const { read, asked } = fakeFiles({ [`${ROOT}/index.html`]: bytes(`<head>${links}</head>`) });
   await detectIcon(ROOT, read);

@@ -61,6 +61,7 @@ import { en, ja, es, fr, de, ru, pt, zh, type WorkspaceKey } from './locales.ts'
 import { MAX_ICON_BYTES } from '../../icons.ts'
 import { pickIconDataUrl } from '../../icon-picker.ts'
 import { createWorkspaceIcons } from '../../workspace-icons.ts'
+import { createIconStoreClient, type ConnectionRpc } from '../../icon-store-rpc.ts'
 
 export type { StartSessionOptions, UiWorkspace } from './navigation.ts'
 export type {
@@ -103,7 +104,7 @@ const NS = 'workspace'
  * provides a waitable service. apply therefore depends on each slot
  * declaration through `slots.inject()` instead of assuming order.
  */
-export const inject = ['contextMenus',
+export const inject = ['contextMenus', 'connection',
   'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'remote.workspaceFiles', 'layout', 'shortcuts', 'remoteAccess',
 ]
 
@@ -128,13 +129,15 @@ export function apply(ctx: Context): void {
   const uiWorkspace = new UiWorkspaceService(
     ctx, ctx.remote.directoryPicker, workspaces, sessions, viewInstance.actions, notify,
   )
-  // LabSideBar: workspace icons. A session's file scope reads absolute paths,
-  // so a workspace without sessions borrows any session to read its files.
-  const iconStorage = (): Storage | undefined => {
-    try { return globalThis.localStorage } catch { return undefined }
-  }
+  // LabSideBar: workspace icons. Custom icons live in the Host profile; a
+  // session's file scope still reads project files for detection.
+  const connection = ctx.get('connection') as ConnectionRpc | undefined
+  if (connection === undefined) throw new Error('lab-sidebar: the connection service is required for workspace icons')
+  const savedIcons = createIconStoreClient(connection)
   const workspaceIcons = createWorkspaceIcons({
-    storage: iconStorage(),
+    load: savedIcons.read,
+    save: savedIcons.save,
+    remove: savedIcons.remove,
     read: async (sessionId, absolutePath) => {
       const result = await ctx.remote.workspaceFiles.readBytes(
         sessionId, absolutePath, { range: { length: MAX_ICON_BYTES + 1 } },
@@ -323,7 +326,8 @@ export function apply(ctx: Context): void {
         { id: 'icon.set', label: t('icon.set'), icon: { key: 'workspace.icon.set' }, failureLabel: t('icon.failed'),
           run: async () => {
             const dataUrl = await pickIconDataUrl()
-            if (dataUrl !== undefined && !workspaceIcons.upload(path, dataUrl)) throw new Error('unsupported icon image')
+            if (dataUrl === undefined) return
+            if (!await workspaceIcons.save(path, dataUrl)) throw new Error('unsupported icon image')
           } },
         { id: 'icon.reset', label: t('icon.reset'), icon: { key: 'workspace.icon.reset' },
           run: () => workspaceIcons.reset(path) },

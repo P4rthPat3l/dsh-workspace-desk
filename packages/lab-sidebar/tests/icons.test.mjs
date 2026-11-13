@@ -1,48 +1,43 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  capStore, clearIcon, dataUrlBytes, emptyIconStore, fitsIconLimit,
-  iconFor, isIconDataUrl, parseIconStore, setNegativeIcon,
-  setUploadedIcon, ICON_KEY,
+  MAX_ICON_BYTES, clearIcon, dataUrlBytes, emptyIconStore, fitsIconLimit,
+  iconFor, isIconDataUrl, setDetectedIcon, setNegativeIcon, setUploadedIcon,
 } from '../src/client/icons.ts';
 
 const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 
-test('AC-007: a stored value that is not a data image URL is discarded', () => {
-  const store = parseIconStore(JSON.stringify({
-    version: 1,
-    entries: {
-      '/a': { kind: 'uploaded', dataUrl: 'javascript:alert(1)', updatedAt: '2026-01-01T00:00:00.000Z' },
-      '/b': { kind: 'uploaded', dataUrl: PNG, updatedAt: '2026-01-01T00:00:00.000Z' },
-      '/c': { kind: 'nonsense', updatedAt: '2026-01-01T00:00:00.000Z' },
-    },
-  }));
-  assert.equal(store.entries['/a'], undefined);
-  assert.equal(store.entries['/b']?.kind, 'uploaded');
-  assert.equal(store.entries['/c'], undefined);
-});
-
-test('AC-005: an uploaded icon is stored against the canonical path', () => {
-  const store = setUploadedIcon(emptyIconStore(), '/work/app', PNG, '2026-11-13T00:00:00.000Z');
+test('AC-002: icon records are kept in memory with no storage adapter', () => {
+  const store = setUploadedIcon(emptyIconStore(), '/work/app', PNG);
   assert.equal(store.entries['/work/app']?.kind, 'uploaded');
   assert.equal(store.entries['/work/app']?.dataUrl, PNG);
-  assert.equal(writeAndRead(store).entries['/work/app']?.dataUrl, PNG);
 });
 
-test('AC-006: a file over the limit is rejected and the store is unchanged', () => {
-  const big = `data:image/png;base64,${'A'.repeat(200 * 1024)}`;
+test('AC-003: the limit is 1 MiB and a value at the boundary fits', () => {
+  assert.equal(MAX_ICON_BYTES, 1024 * 1024);
+  const fits = `data:image/png;base64,${'A'.repeat(Math.ceil(MAX_ICON_BYTES * 4 / 3))}`;
+  const over = `data:image/png;base64,${'A'.repeat(Math.ceil((MAX_ICON_BYTES + 1) * 4 / 3))}`;
+  assert.equal(fitsIconLimit(fits), true);
+  assert.equal(fitsIconLimit(over), false);
+});
+
+test('AC-003: an oversized value leaves the store unchanged', () => {
+  const over = `data:image/png;base64,${'A'.repeat(Math.ceil((MAX_ICON_BYTES + 10) * 4 / 3))}`;
   const before = emptyIconStore();
-  const after = setUploadedIcon(before, '/work/app', big);
-  assert.deepEqual(after, before);
-  assert.equal(fitsIconLimit(big), false);
+  assert.deepEqual(setUploadedIcon(before, '/work/app', over), before);
 });
 
-test('uploaded records survive a storage round trip', () => {
-  const storage = memoryStorage();
-  const store = setUploadedIcon(emptyIconStore(), '/work/app', PNG);
-  storage.setItem(ICON_KEY, JSON.stringify(store));
-  const read = parseIconStore(storage.getItem(ICON_KEY));
-  assert.equal(read.entries['/work/app']?.dataUrl, PNG);
+test('a stored value that is not a data image URL is refused', () => {
+  const store = emptyIconStore();
+  assert.equal(setUploadedIcon(store, '/a', 'javascript:alert(1)').entries['/a'], undefined);
+  assert.equal(isIconDataUrl(PNG), true);
+  assert.equal(isIconDataUrl('data:text/html;base64,PHN2Zy8+'), false);
+});
+
+test('a detected icon carries its source', () => {
+  const store = setDetectedIcon(emptyIconStore(), '/work/app', PNG, 'favicon.svg');
+  assert.equal(store.entries['/work/app']?.kind, 'detected');
+  assert.equal(store.entries['/work/app']?.source, 'favicon.svg');
 });
 
 test('a negative record hides the icon until its retry horizon', () => {
@@ -60,22 +55,6 @@ test('clearing one path keeps the others', () => {
   assert.equal(store.entries['/b']?.kind, 'uploaded');
 });
 
-test('the store keeps at most 64 records, newest first', () => {
-  let store = emptyIconStore();
-  for (let index = 0; index < 70; index += 1) {
-    store = setUploadedIcon(store, `/p${index}`, PNG, new Date(Date.UTC(2026, 0, 1, 0, index)).toISOString());
-  }
-  const capped = capStore(store);
-  assert.equal(Object.keys(capped.entries).length, 64);
-  assert.equal(capped.entries['/p0'], undefined);
-  assert.equal(capped.entries['/p69']?.kind, 'uploaded');
-});
-
-test('a store from another version is dropped', () => {
-  const raw = JSON.stringify({ version: 2, entries: { '/a': { kind: 'uploaded', dataUrl: PNG, updatedAt: '2026-01-01T00:00:00.000Z' } } });
-  assert.deepEqual(parseIconStore(raw).entries, {});
-});
-
 test('ICO data URLs are accepted', () => {
   assert.equal(isIconDataUrl('data:image/x-icon;base64,AAABAA=='), true);
 });
@@ -83,19 +62,4 @@ test('ICO data URLs are accepted', () => {
 test('data URL byte length matches base64 decoding', () => {
   assert.equal(dataUrlBytes(PNG), 70);
   assert.equal(isIconDataUrl('data:image/svg+xml;base64,PHN2Zy8+'), true);
-  assert.equal(isIconDataUrl('data:text/html;base64,PHN2Zy8+'), false);
 });
-
-function writeAndRead(store) {
-  const storage = memoryStorage();
-  storage.setItem(ICON_KEY, JSON.stringify(store));
-  return parseIconStore(storage.getItem(ICON_KEY));
-}
-
-function memoryStorage() {
-  const map = new Map();
-  return {
-    getItem: key => map.get(key) ?? null,
-    setItem: (key, value) => { map.set(key, String(value)); },
-  };
-}

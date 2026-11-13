@@ -1697,11 +1697,9 @@ var import_react3 = require("react");
 var import_dsh_client_ui_primitives2 = require("@deepseek-ai/dsh-client-ui-primitives");
 
 // packages/lab-sidebar/src/client/icons.ts
-var ICON_KEY = "dsh.lab.icons.v1";
-var MAX_ICON_BYTES = 128 * 1024;
-var MAX_ICON_ENTRIES = 64;
+var MAX_ICON_BYTES = 1024 * 1024;
 function emptyIconStore() {
-  return { version: 1, entries: {} };
+  return { entries: {} };
 }
 function isIconDataUrl(value) {
   return typeof value === "string" && /^data:image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon);base64,[A-Za-z0-9+/=]+$/u.test(value);
@@ -1715,70 +1713,6 @@ function dataUrlBytes(value) {
 }
 function fitsIconLimit(value, maxBytes = MAX_ICON_BYTES) {
   return isIconDataUrl(value) && dataUrlBytes(value) <= maxBytes;
-}
-function parseRecord(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const record = { ...value };
-  const kind = record.kind;
-  if (kind !== "uploaded" && kind !== "detected" && kind !== "negative" && kind !== "invalid") return void 0;
-  if (typeof record.updatedAt !== "string" || record.updatedAt === "") return void 0;
-  const dataUrl = isIconDataUrl(record.dataUrl) ? record.dataUrl : void 0;
-  if (kind === "uploaded" || kind === "detected") {
-    if (dataUrl === void 0 || dataUrlBytes(dataUrl) > MAX_ICON_BYTES) return void 0;
-  }
-  const source = typeof record.source === "string" ? record.source : void 0;
-  const retryAfter = typeof record.retryAfter === "string" ? record.retryAfter : void 0;
-  return {
-    kind,
-    ...dataUrl === void 0 ? {} : { dataUrl },
-    ...source === void 0 ? {} : { source },
-    updatedAt: record.updatedAt,
-    ...retryAfter === void 0 ? {} : { retryAfter }
-  };
-}
-function parseIconStore(raw) {
-  if (raw === null || raw === "") return emptyIconStore();
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return emptyIconStore();
-  }
-  if (typeof parsed !== "object" || parsed === null || !("version" in parsed) || parsed.version !== 1) {
-    return emptyIconStore();
-  }
-  const entries = "entries" in parsed ? parsed.entries : void 0;
-  if (typeof entries !== "object" || entries === null) return emptyIconStore();
-  const next = {};
-  for (const [path, value] of Object.entries(entries)) {
-    const record = parseRecord(value);
-    if (record !== void 0) next[path] = record;
-  }
-  return { version: 1, entries: next };
-}
-function readIconStore(storage) {
-  if (storage === void 0) return emptyIconStore();
-  try {
-    return parseIconStore(storage.getItem(ICON_KEY));
-  } catch {
-    return emptyIconStore();
-  }
-}
-function writeIconStore(store, storage) {
-  const capped = capStore(store);
-  if (storage !== void 0) {
-    try {
-      storage.setItem(ICON_KEY, JSON.stringify(capped));
-    } catch {
-    }
-  }
-  return capped;
-}
-function capStore(store, max = MAX_ICON_ENTRIES) {
-  const entries = Object.entries(store.entries);
-  if (entries.length <= max) return store;
-  const keep = entries.sort((left, right) => Date.parse(right[1].updatedAt) - Date.parse(left[1].updatedAt)).slice(0, max);
-  return { version: 1, entries: Object.fromEntries(keep) };
 }
 function setUploadedIcon(store, path, dataUrl, now = (/* @__PURE__ */ new Date()).toISOString()) {
   if (!fitsIconLimit(dataUrl)) return store;
@@ -1794,7 +1728,7 @@ function setNegativeIcon(store, path, retryAfter, now = (/* @__PURE__ */ new Dat
 function clearIcon(store, path) {
   const entries = { ...store.entries };
   delete entries[path];
-  return { version: 1, entries };
+  return { entries };
 }
 function iconFor(store, path, now = Date.now()) {
   const record = store.entries[path];
@@ -1806,7 +1740,7 @@ function iconFor(store, path, now = Date.now()) {
   return record;
 }
 function writeInMemory(store, path, record) {
-  return { version: 1, entries: { ...store.entries, [path]: record } };
+  return { entries: { ...store.entries, [path]: record } };
 }
 
 // packages/lab-sidebar/src/client/plugin/client/rows/Rows.module.css
@@ -4254,7 +4188,7 @@ var zh = {
   "delete.workspace": "\u5220\u9664\u5DE5\u4F5C\u533A",
   "icon.set": "\u8BBE\u7F6E\u56FE\u6807\u2026",
   "icon.reset": "\u91CD\u7F6E\u56FE\u6807",
-  "icon.failed": "\u56FE\u6807\u987B\u4E3A 128 KB \u4EE5\u5185\u7684 PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP \u6216 GIF\u3002",
+  "icon.failed": "\u56FE\u6807\u987B\u4E3A 1 MB \u4EE5\u5185\u7684 PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP \u6216 GIF\u3002",
   "delete.desc": "\u5C06\u628A\u201C{name}\u201D\u4ECE\u5DE5\u4F5C\u533A\u5217\u8868\u4E2D\u79FB\u9664\u3002\u6587\u4EF6\u5939\u4E0E\u4F1A\u8BDD\u8BB0\u5F55\u4F1A\u4FDD\u7559\uFF0C\u5176\u4F1A\u8BDD\u5C06\u663E\u793A\u5728\u201C\u672A\u5206\u7EC4\u201D\u4E0B\u3002",
   "delete.pending": "\u6B63\u5728\u5220\u9664\u5DE5\u4F5C\u533A\u2026",
   "menu.fork": "\u5206\u53C9\u4F1A\u8BDD",
@@ -4378,7 +4312,7 @@ var en = {
   "delete.workspace": "Delete workspace",
   "icon.set": "Set icon\u2026",
   "icon.reset": "Reset icon",
-  "icon.failed": "Choose a PNG, SVG, ICO, JPEG, WebP, or GIF up to 128 KB.",
+  "icon.failed": "Choose a PNG, SVG, ICO, JPEG, WebP, or GIF up to 1 MB.",
   "delete.desc": "This removes \u201C{name}\u201D from the workspace list. The folder and session logs will be kept. Its sessions will appear under Ungrouped.",
   "delete.pending": "Deleting workspace\u2026",
   "menu.fork": "Fork session",
@@ -4502,7 +4436,7 @@ var ja = {
   "delete.workspace": "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u3092\u524A\u9664",
   "icon.set": "\u30A2\u30A4\u30B3\u30F3\u3092\u8A2D\u5B9A\u2026",
   "icon.reset": "\u30A2\u30A4\u30B3\u30F3\u3092\u30EA\u30BB\u30C3\u30C8",
-  "icon.failed": "128 KB \u4EE5\u4E0B\u306E PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP\u3001GIF \u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  "icon.failed": "1 MB \u4EE5\u4E0B\u306E PNG\u3001SVG\u3001ICO\u3001JPEG\u3001WebP\u3001GIF \u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
   "delete.desc": "\u300C{name}\u300D\u3092\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u4E00\u89A7\u304B\u3089\u524A\u9664\u3057\u307E\u3059\u3002\u30D5\u30A9\u30EB\u30C0\u3068\u30BB\u30C3\u30B7\u30E7\u30F3\u30ED\u30B0\u306F\u4FDD\u6301\u3055\u308C\u307E\u3059\u3002\u3053\u306E\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u306F\u300C\u672A\u5206\u985E\u300D\u306B\u8868\u793A\u3055\u308C\u307E\u3059\u3002",
   "delete.pending": "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u3092\u524A\u9664\u4E2D\u2026",
   "menu.fork": "\u30BB\u30C3\u30B7\u30E7\u30F3\u3092\u30D5\u30A9\u30FC\u30AF",
@@ -4626,7 +4560,7 @@ var es = {
   "delete.workspace": "Eliminar espacio de trabajo",
   "icon.set": "Establecer icono\u2026",
   "icon.reset": "Restablecer icono",
-  "icon.failed": "Elige un PNG, SVG, ICO, JPEG, WebP o GIF de hasta 128 KB.",
+  "icon.failed": "Elige un PNG, SVG, ICO, JPEG, WebP o GIF de hasta 1 MB.",
   "delete.desc": 'Esto elimina "{name}" de la lista de espacios de trabajo. Se conservar\xE1n los registros de carpetas y sesiones. Sus sesiones aparecer\xE1n en Desagrupadas.',
   "delete.pending": "Eliminando espacio de trabajo\u2026",
   "menu.fork": "Crear una bifurcaci\xF3n de la sesi\xF3n",
@@ -4750,7 +4684,7 @@ var fr = {
   "delete.workspace": "Supprimer l'espace de travail",
   "icon.set": "D\xE9finir l\u2019ic\xF4ne\u2026",
   "icon.reset": "R\xE9initialiser l\u2019ic\xF4ne",
-  "icon.failed": "Choisissez un PNG, SVG, ICO, JPEG, WebP ou GIF de 128 Ko maximum.",
+  "icon.failed": "Choisissez un PNG, SVG, ICO, JPEG, WebP ou GIF de 1 Mo maximum.",
   "delete.desc": "Cela supprime \xAB\xA0{name}\xA0\xBB de la liste des espaces de travail. Les journaux de dossiers et de sessions seront conserv\xE9s. Ses sessions appara\xEEtront sous Non group\xE9es.",
   "delete.pending": "Suppression de l'espace de travail\u2026",
   "menu.fork": "Cr\xE9er une branche de la session",
@@ -4874,7 +4808,7 @@ var de = {
   "delete.workspace": "Arbeitsbereich l\xF6schen",
   "icon.set": "Symbol festlegen\u2026",
   "icon.reset": "Symbol zur\xFCcksetzen",
-  "icon.failed": "W\xE4hle eine PNG-, SVG-, ICO-, JPEG-, WebP- oder GIF-Datei bis 128 KB.",
+  "icon.failed": "W\xE4hle eine PNG-, SVG-, ICO-, JPEG-, WebP- oder GIF-Datei bis 1 MB.",
   "delete.desc": "Dadurch wird \u201E{name}\u201C aus der Arbeitsbereichsliste entfernt. Die Ordner- und Sitzungsprotokolle werden aufbewahrt. Seine Sitzungen werden unter \u201ENicht gruppiert\u201C angezeigt.",
   "delete.pending": "Arbeitsbereich wird gel\xF6scht\u2026",
   "menu.fork": "Sitzung abzweigen",
@@ -4998,7 +4932,7 @@ var ru = {
   "delete.workspace": "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0440\u0430\u0431\u043E\u0447\u0443\u044E \u043E\u0431\u043B\u0430\u0441\u0442\u044C",
   "icon.set": "\u0417\u0430\u0434\u0430\u0442\u044C \u0437\u043D\u0430\u0447\u043E\u043A\u2026",
   "icon.reset": "\u0421\u0431\u0440\u043E\u0441\u0438\u0442\u044C \u0437\u043D\u0430\u0447\u043E\u043A",
-  "icon.failed": "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 PNG, SVG, ICO, JPEG, WebP \u0438\u043B\u0438 GIF \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u043C \u0434\u043E 128 \u041A\u0411.",
+  "icon.failed": "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 PNG, SVG, ICO, JPEG, WebP \u0438\u043B\u0438 GIF \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u043C \u0434\u043E 1 \u041C\u0411.",
   "delete.desc": "\u042D\u0442\u043E \u0443\u0434\u0430\u043B\u0438\u0442 \xAB{name}\xBB \u0438\u0437 \u0441\u043F\u0438\u0441\u043A\u0430 \u0440\u0430\u0431\u043E\u0447\u0435\u0439 \u043E\u0431\u043B\u0430\u0441\u0442\u0438. \u0416\u0443\u0440\u043D\u0430\u043B\u044B \u043F\u0430\u043F\u043E\u043A \u0438 \u0441\u0435\u0430\u043D\u0441\u043E\u0432 \u0431\u0443\u0434\u0443\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u044B. \u0415\u0433\u043E \u0441\u0435\u0430\u043D\u0441\u044B \u043F\u043E\u044F\u0432\u044F\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 \xAB\u0420\u0430\u0437\u0433\u0440\u0443\u043F\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u043E\xBB.",
   "delete.pending": "\u0423\u0434\u0430\u043B\u0435\u043D\u0438\u0435 \u0440\u0430\u0431\u043E\u0447\u0435\u0439 \u043E\u0431\u043B\u0430\u0441\u0442\u0438\u2026",
   "menu.fork": "\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u043E\u0442\u0432\u0435\u0442\u0432\u043B\u0435\u043D\u0438\u0435 \u0441\u0435\u0430\u043D\u0441\u0430",
@@ -5122,7 +5056,7 @@ var pt = {
   "delete.workspace": "Excluir espa\xE7o de trabalho",
   "icon.set": "Definir \xEDcone\u2026",
   "icon.reset": "Redefinir \xEDcone",
-  "icon.failed": "Escolha um PNG, SVG, ICO, JPEG, WebP ou GIF de at\xE9 128 KB.",
+  "icon.failed": "Escolha um PNG, SVG, ICO, JPEG, WebP ou GIF de at\xE9 1 MB.",
   "delete.desc": "Isso remove \u201C{name}\u201D da lista de espa\xE7os de trabalho. A pasta e os logs de sess\xE3o ser\xE3o mantidos. Suas sess\xF5es aparecer\xE3o em Desagrupado.",
   "delete.pending": "Excluindo espa\xE7o de trabalho\u2026",
   "menu.fork": "Bifurcar sess\xE3o",
@@ -5379,13 +5313,16 @@ var NEGATIVE_RETRY_MS = 30 * 60 * 1e3;
 var CONCURRENCY = 2;
 function createWorkspaceIcons(deps) {
   const now = deps.now ?? Date.now;
-  let store = readIconStore(deps.storage);
+  let store = emptyIconStore();
   const listeners = /* @__PURE__ */ new Set();
   const pending = /* @__PURE__ */ new Map();
+  const checked = /* @__PURE__ */ new Set();
+  const revisions = /* @__PURE__ */ new Map();
   let running = 0;
   const waiting = [];
+  const stamp = (instant = now()) => new Date(instant).toISOString();
   const commit = (next) => {
-    store = writeIconStore(next, deps.storage);
+    store = next;
     for (const listener of listeners) listener();
   };
   const acquire = async () => {
@@ -5398,11 +5335,40 @@ function createWorkspaceIcons(deps) {
     running -= 1;
     waiting.shift()?.();
   };
+  const revisionOf = (path) => revisions.get(path) ?? 0;
+  const bump = (path) => {
+    const next = revisionOf(path) + 1;
+    revisions.set(path, next);
+    return next;
+  };
   const detect = async (path) => {
     const sessionId = deps.sessionFor(path);
     if (sessionId === void 0) return;
     await acquire();
+    const revision = revisionOf(path);
     try {
+      let loadFailed = false;
+      if (deps.load !== void 0 && !checked.has(path)) {
+        checked.add(path);
+        try {
+          const saved = await deps.load(path);
+          if (saved !== void 0) {
+            if (!fitsIconLimit(saved)) {
+              console.warn("[lab-sidebar] ignoring an oversized saved workspace icon:", path);
+            } else if (revisionOf(path) === revision) {
+              commit(setUploadedIcon(store, path, saved, stamp()));
+              return;
+            } else {
+              return;
+            }
+          }
+        } catch (reason) {
+          checked.delete(path);
+          loadFailed = true;
+          console.warn("[lab-sidebar] saved workspace icon read failed:", path, reason);
+        }
+      }
+      if (revisionOf(path) !== revision) return;
       let failed = false;
       const read = async (file) => {
         try {
@@ -5416,11 +5382,9 @@ function createWorkspaceIcons(deps) {
         }
       };
       const icon = await detectIcon(path, read);
-      if (icon === void 0 && failed) return;
-      const current = iconFor(store, path, now());
-      if (current !== void 0 && current.kind === "uploaded") return;
-      const stamp = new Date(now()).toISOString();
-      commit(icon === void 0 ? setNegativeIcon(store, path, new Date(now() + NEGATIVE_RETRY_MS).toISOString(), stamp) : setDetectedIcon(store, path, icon.dataUrl, icon.source, stamp));
+      if (icon === void 0 && (failed || loadFailed)) return;
+      if (revisionOf(path) !== revision) return;
+      commit(icon === void 0 ? setNegativeIcon(store, path, new Date(now() + NEGATIVE_RETRY_MS).toISOString(), stamp()) : setDetectedIcon(store, path, icon.dataUrl, icon.source, stamp()));
     } finally {
       release();
     }
@@ -5435,6 +5399,24 @@ function createWorkspaceIcons(deps) {
     pending.set(path, job);
     return job;
   };
+  const save = async (path, dataUrl) => {
+    if (deps.save === void 0 || !fitsIconLimit(dataUrl)) return false;
+    await deps.save(path, dataUrl);
+    bump(path);
+    checked.add(path);
+    commit(setUploadedIcon(store, path, dataUrl, stamp()));
+    return true;
+  };
+  const reset = async (path) => {
+    if (deps.remove !== void 0) await deps.remove(path);
+    bump(path);
+    checked.delete(path);
+    commit(clearIcon(store, path));
+    const inFlight = pending.get(path);
+    if (inFlight !== void 0) await inFlight.catch(() => {
+    });
+    await ensure(path);
+  };
   return {
     getSnapshot: () => store,
     subscribe: (listener) => {
@@ -5444,23 +5426,42 @@ function createWorkspaceIcons(deps) {
       };
     },
     ensure,
-    upload: (path, dataUrl) => {
-      const next = setUploadedIcon(store, path, dataUrl, new Date(now()).toISOString());
-      if (next === store) return false;
-      commit(next);
-      return true;
+    save,
+    reset
+  };
+}
+
+// packages/lab-sidebar/src/client/icon-store-rpc.ts
+var ICON_ROUTE = "/lab-icons";
+function createIconStoreClient(connection) {
+  const call = async (method, payload) => {
+    const result = await connection.rpc.call(ICON_ROUTE, method, payload);
+    if (!result.ok) throw new Error(`${ICON_ROUTE}/${method}: ${result.error.code}: ${result.error.message}`);
+    return result.value;
+  };
+  return {
+    async read(workspacePath) {
+      const value = await call("get", { path: workspacePath });
+      const dataUrl = isRecord(value) ? value.dataUrl : void 0;
+      return typeof dataUrl === "string" ? dataUrl : void 0;
     },
-    reset: (path) => {
-      commit(clearIcon(store, path));
-      return ensure(path);
+    async save(workspacePath, dataUrl) {
+      await call("set", { path: workspacePath, dataUrl });
+    },
+    async remove(workspacePath) {
+      await call("reset", { path: workspacePath });
     }
   };
+}
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 // packages/lab-sidebar/src/client/plugin/client/index.ts
 var NS = "workspace";
 var inject = [
   "contextMenus",
+  "connection",
   "slots",
   "sessions",
   "workspaces",
@@ -5491,15 +5492,13 @@ function apply(ctx) {
     viewInstance.actions,
     notify
   );
-  const iconStorage = () => {
-    try {
-      return globalThis.localStorage;
-    } catch {
-      return void 0;
-    }
-  };
+  const connection = ctx.get("connection");
+  if (connection === void 0) throw new Error("lab-sidebar: the connection service is required for workspace icons");
+  const savedIcons = createIconStoreClient(connection);
   const workspaceIcons = createWorkspaceIcons({
-    storage: iconStorage(),
+    load: savedIcons.read,
+    save: savedIcons.save,
+    remove: savedIcons.remove,
     read: async (sessionId, absolutePath) => {
       const result = await ctx.remote.workspaceFiles.readBytes(
         sessionId,
@@ -5718,7 +5717,8 @@ function apply(ctx) {
           failureLabel: t("icon.failed"),
           run: async () => {
             const dataUrl = await pickIconDataUrl();
-            if (dataUrl !== void 0 && !workspaceIcons.upload(path, dataUrl)) throw new Error("unsupported icon image");
+            if (dataUrl === void 0) return;
+            if (!await workspaceIcons.save(path, dataUrl)) throw new Error("unsupported icon image");
           }
         },
         {

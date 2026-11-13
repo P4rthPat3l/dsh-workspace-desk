@@ -1,0 +1,4 @@
+# Insert the agent tools row; uninstalling the bundle removes both tools.
+- insert:
+    - id: lab-tools
+      name: dsh-lab-tools

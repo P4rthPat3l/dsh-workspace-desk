@@ -8,11 +8,17 @@
     "packages/*"
   ],
   "scripts": {
-    "bundle": "node scripts/build-client.mjs",
+    "bundle": "node scripts/build-client.mjs && node scripts/build-host.mjs && node scripts/build-tools.mjs",
+    "bundle:host": "node scripts/build-host.mjs",
+    "bundle:tools": "node scripts/build-tools.mjs",
     "test": "node --test packages/*/tests/*.test.mjs",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.host.json && tsc --noEmit -p tsconfig.tools.json"
   },
   "devDependencies": {
+    "@deepseek-ai/dsh-llm": "^0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "^0.2.2-rc.1",
+    "@deepseek-ai/dsh-user-approval": "^0.2.2-rc.1",
+    "@types/node": "^20.17.57",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "esbuild": "^0.25.0",

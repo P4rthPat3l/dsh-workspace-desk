@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["packages/lab-tools/index.ts", "packages/lab-tools/src/**/*.ts"],
+  "exclude": []
+}
