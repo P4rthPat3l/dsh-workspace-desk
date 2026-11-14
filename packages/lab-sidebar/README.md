@@ -1,6 +1,6 @@
-# LabSideBar
+# dsh-workspaces
 
-LabSideBar replaces the built-in workspace section in the DeepSeek Harness sidebar. Workspaces get project icons, session activity on their rows, three layouts, and menu actions. Two optional agent tools expose workspace and session management to the model.
+The bundle replaces the built-in workspace section in the DeepSeek Harness sidebar. Workspaces get project icons, session activity on their rows, three layouts, and menu actions. Two optional agent tools expose workspace and session management to the model.
 
 ## Features
 
@@ -13,7 +13,7 @@ LabSideBar replaces the built-in workspace section in the DeepSeek Harness sideb
 
 ## Installation
 
-LabSideBar is a DeepSeek Harness plugin, not a standalone application.
+This is a DeepSeek Harness plugin bundle, not a standalone application.
 
 1. Open **Plugins** in DeepSeek Harness.
 2. Install the npm bundle `dsh-workspaces` with the plugin manager.

@@ -48,7 +48,7 @@ export function apply(ctx: ApplyContext): void {
     approval === undefined
   ) {
     ctx.logger('lab-tools').warn(
-      'LabSideBar agent tools did not register: missing Host service ' + missing.join(', ') + '.',
+      'Workspaces agent tools did not register: missing Host service ' + missing.join(', ') + '.',
     );
     return;
   }

@@ -529,7 +529,7 @@ function apply(ctx) {
   if (approval === void 0) missing.push("approval");
   if (tools === void 0 || workspaceRegistry === void 0 || workspaceController === void 0 || sessionController === void 0 || approval === void 0) {
     ctx.logger("lab-tools").warn(
-      "LabSideBar agent tools did not register: missing Host service " + missing.join(", ") + "."
+      "Workspaces agent tools did not register: missing Host service " + missing.join(", ") + "."
     );
     return;
   }

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "LabSideBar",
-    "description": "LabSideBar: workspace icons, session status, and optional agent tools for the DeepSeek Harness sidebar."
+    "title": "Workspaces",
+    "description": "Workspace icons, session activity, and optional agent tools for the DeepSeek Harness sidebar."
   }
 }

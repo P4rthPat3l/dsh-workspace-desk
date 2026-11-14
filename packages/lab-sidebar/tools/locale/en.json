@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "LabSideBar agent tools",
+    "title": "Workspaces agent tools",
     "description": "Model-callable workspace and session management. Turn this row off to keep the sidebar without the agent tools."
   }
 }
