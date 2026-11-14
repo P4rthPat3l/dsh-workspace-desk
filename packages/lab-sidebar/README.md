@@ -53,7 +53,7 @@ npm pack --dry-run -w packages/lab-sidebar
 
 ## Issues and source
 
-Report bugs and request changes in the [GitHub repository](https://github.com/P4rthPat3l/dsh-workspace-desk).
+Report bugs and request changes in the [GitHub repository](https://github.com/P4rthPat3l/dsh-workspaces).
 
 ## License
 

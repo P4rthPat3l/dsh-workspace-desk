@@ -4,6 +4,11 @@
   "type": "module",
   "description": "LabSideBar: workspace icons, session status, and optional agent tools for the DeepSeek Harness.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/P4rthPat3l/dsh-workspaces.git",
+    "directory": "packages/lab-sidebar"
+  },
   "icon": "icon.svg",
   "exports": {
     ".": "./index.js",
