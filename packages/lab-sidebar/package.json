@@ -1,21 +1,30 @@
 {
   "name": "dsh-lab-sidebar",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
-  "description": "LabSideBar: workspace icons and session status for the DeepSeek Harness sidebar.",
+  "description": "LabSideBar: workspace icons, session status, and optional agent tools for the DeepSeek Harness.",
   "license": "MIT",
   "icon": "icon.svg",
   "exports": {
     ".": "./index.js",
+    "./tools": "./tools.js",
     "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./tools/locale/*.json": "./tools/locale/*.json",
+    "./icon": "./icon.svg",
+    "./tools/icon": "./tools/icon.svg",
     "./package.json": "./package.json"
   },
   "files": [
     "index.js",
+    "tools.js",
     "client.js",
     "cordis.patch.yml",
-    "icon.svg"
+    "icon.svg",
+    "locale/*.json",
+    "tools/icon.svg",
+    "tools/locale/*.json"
   ],
   "dsh": {
     "bundle": {

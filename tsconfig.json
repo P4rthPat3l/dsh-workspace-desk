@@ -11,5 +11,5 @@
     "types": ["react", "react-dom"]
   },
   "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "packages/*/src/**/*.d.ts"],
-  "exclude": ["packages/lab-tools/**", "packages/lab-sidebar/src/host/**"]
+  "exclude": ["packages/lab-sidebar/src/host/**", "packages/lab-sidebar/src/tools/**"]
 }

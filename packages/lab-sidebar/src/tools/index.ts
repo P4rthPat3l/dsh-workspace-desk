@@ -1,11 +1,11 @@
-/** Host half of the LabSideBar agent tools bundle. */
-import { createTools, type LabToolDefinition } from './src/tools.ts';
-import type { ApprovalServiceLike } from './src/approve.ts';
+/** Host half of the LabSideBar agent tools: one optional bundle row. */
+import { createTools, type LabToolDefinition } from './tools.ts';
+import type { ApprovalServiceLike } from './approve.ts';
 import type {
   SessionControllerLike,
   WorkspaceControllerLike,
   WorkspaceRegistryLike,
-} from './src/ops.ts';
+} from './ops.ts';
 
 /** Stable Loader identity. */
 export const name = 'lab-tools';
@@ -48,7 +48,7 @@ export function apply(ctx: ApplyContext): void {
     approval === undefined
   ) {
     ctx.logger('lab-tools').warn(
-      'dsh-lab-tools did not register: missing Host service ' + missing.join(', ') + '.',
+      'LabSideBar agent tools did not register: missing Host service ' + missing.join(', ') + '.',
     );
     return;
   }

@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "include": ["packages/lab-tools/index.ts", "packages/lab-tools/src/**/*.ts"],
+  "include": ["packages/lab-sidebar/src/tools/**/*.ts"],
   "exclude": []
 }

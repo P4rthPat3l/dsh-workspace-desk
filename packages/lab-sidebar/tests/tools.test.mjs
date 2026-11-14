@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { apply } from '../index.ts';
+import { apply } from '../src/tools/index.ts';
 
 /** In-memory Host services that follow the real request and value shapes. */
 function fixture() {
