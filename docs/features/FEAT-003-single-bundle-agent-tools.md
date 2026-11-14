@@ -163,7 +163,7 @@ sequenceDiagram
 
 | Layer | Responsibility | Repository path | Main symbol | Status |
 | --- | --- | --- | --- | --- |
-| Bundle manifest | One bundle with the sidebar, tools, client, locale, and icon exports | `packages/lab-sidebar/package.json` | `dsh-lab-sidebar` | Inferred |
+| Bundle manifest | One bundle with the sidebar, tools, client, locale, and icon exports | `packages/lab-sidebar/package.json` | `dsh-workspaces` | Inferred |
 | Bundle patch | Disables the shipped workspace row and inserts both rows | `packages/lab-sidebar/cordis.patch.yml` | `lab-sidebar`, `lab-tools` | Inferred |
 | Sidebar host plugin | Registers the authenticated icon store route | `packages/lab-sidebar/src/host/index.ts` | `apply` | Inferred |
 | Client entry | Activates the workspace UI and stylesheet | `packages/lab-sidebar/src/client/index.tsx` | `apply` | Inferred |
@@ -197,7 +197,7 @@ sequenceDiagram
 | Rule ID | Status | Rule | Enforcement point | Test reference |
 | --- | --- | --- | --- | --- |
 | BR-001 | Inferred | One installed bundle provides both the sidebar row and the tools row. | `packages/lab-sidebar/cordis.patch.yml` | `tests/bundle.test.mjs` |
-| BR-002 | Inferred | The `lab-tools` row resolves to `dsh-lab-sidebar/tools`. | Bundle patch and package exports | `tests/bundle.test.mjs` |
+| BR-002 | Inferred | The `lab-tools` row resolves to `dsh-workspaces/tools`. | Bundle patch and package exports | `tests/bundle.test.mjs` |
 | BR-003 | Inferred | Disabling the tools row leaves the sidebar row active and the icon route registered. | Loader row independence | Live row switch; `tests/icon-route.test.mjs` |
 | BR-004 | Inferred | An enabled tools row registers exactly the `workspace` and `session` tools. | `src/tools/tools.ts` | `tests/tools.test.mjs`; live tool list |
 | BR-005 | Inferred | Row ids stay `lab-sidebar` and `lab-tools`. | Bundle patch | `tests/bundle.test.mjs` |
@@ -279,7 +279,7 @@ sequenceDiagram
 | CASE-001 | The tools row is disabled while a tool call is running | The run keeps its existing cancellation control; the row unmounts after the turn. | Not exercised |
 | CASE-002 | The profile lacks an `approval` service | The tools row warns and registers nothing; the sidebar loads. | Unit |
 | CASE-003 | The old tools bundle is still selected | The bundle is marked missing and has no rows; remove it before verifying. | Live check |
-| CASE-004 | The patch cannot resolve `dsh-lab-sidebar/tools` | The bundle test fails on the export before installation. | Unit |
+| CASE-004 | The patch cannot resolve `dsh-workspaces/tools` | The bundle test fails on the export before installation. | Unit |
 | CASE-005 | The linked package is rebuilt | The host module applies after the plugin manager change; the browser half needs a window reload. | Live check, host only |
 
 ## 17. Security and Privacy
@@ -330,7 +330,7 @@ Live check performed on 2026-11-14:
 ## 29. Decisions
 
 - **DEC-001**: Use one package with two rows, not one row with a boolean config option. The DSH Plugins page switches individual rows, so this is the native enable/disable control and matches `dsh-artifact-studio`. Approved on 2026-11-14.
-- **DEC-002**: Keep the package name `dsh-lab-sidebar` and the row ids `lab-sidebar` and `lab-tools` to avoid a profile migration beyond removing the old tools bundle. Approved on 2026-11-14.
+- **DEC-002**: Keep the row ids `lab-sidebar` and `lab-tools` to avoid a profile migration beyond removing the old tools bundle. Rename the npm package to `dsh-workspaces` before the first public release, because `dsh-lab-sidebar` carried the internal repository name and read poorly on npm. Row ids and tool contracts stay unchanged. Approved on 2026-11-14, revised the same day.
 - **DEC-003**: Keep the tool contracts and the destructive-action approval unchanged. The merge is packaging only. Approved on 2026-11-14.
 
 ## 30. Changelog

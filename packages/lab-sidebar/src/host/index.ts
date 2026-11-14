@@ -13,5 +13,5 @@ export const inject = ['connection', 'webServer'];
  */
 export function apply(ctx: HostContext): void {
   const store = createIconStore(dshHomePath('plugins', 'lab-sidebar', 'icons'));
-  ctx.effect(() => registerIconRoute(ctx, store), 'dsh-lab-sidebar: workspace icon store');
+  ctx.effect(() => registerIconRoute(ctx, store), 'dsh-workspaces: workspace icon store');
 }

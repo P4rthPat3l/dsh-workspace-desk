@@ -4,6 +4,6 @@
   disabled: true
 - insert:
     - id: lab-sidebar
-      name: 'dsh-lab-sidebar'
+      name: 'dsh-workspaces'
     - id: lab-tools
-      name: 'dsh-lab-sidebar/tools'
+      name: 'dsh-workspaces/tools'

@@ -16,12 +16,12 @@ export function apply(ctx: Context): void {
   try {
     if (typeof document !== 'undefined' && __LAB_CSS__ !== undefined && __LAB_CSS__ !== '') {
       const style = document.createElement('style');
-      style.setAttribute('data-plugin-css', 'dsh-lab-sidebar');
+      style.setAttribute('data-plugin-css', 'dsh-workspaces');
       style.textContent = __LAB_CSS__;
       document.head.appendChild(style);
     }
     applyWorkspace(ctx);
   } catch (error: unknown) {
-    console.error('[lab-sidebar] failed to activate the workspace copy', error);
+    console.error('[dsh-workspaces] failed to activate the workspace copy', error);
   }
 }

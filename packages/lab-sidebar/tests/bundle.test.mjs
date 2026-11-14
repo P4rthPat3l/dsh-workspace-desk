@@ -13,14 +13,14 @@ async function readJson(path) {
 
 test('AC-001 and AC-002: one bundle inserts the sidebar and tools rows', async () => {
   const manifest = await readJson(join(PACKAGE_DIR, 'package.json'));
-  assert.equal(manifest.name, 'dsh-lab-sidebar');
+  assert.equal(manifest.name, 'dsh-workspaces');
   assert.equal(manifest.dsh.bundle.patch, './cordis.patch.yml');
   assert.equal(manifest.dsh.client.platform, 'web');
 
   const patch = await readFile(join(PACKAGE_DIR, 'cordis.patch.yml'), 'utf8');
   assert.match(patch, /- id: ui-workspace\s+disabled: true/u);
-  assert.match(patch, /- id: lab-sidebar\s+name: 'dsh-lab-sidebar'/u);
-  assert.match(patch, /- id: lab-tools\s+name: 'dsh-lab-sidebar\/tools'/u);
+  assert.match(patch, /- id: lab-sidebar\s+name: 'dsh-workspaces'/u);
+  assert.match(patch, /- id: lab-tools\s+name: 'dsh-workspaces\/tools'/u);
   assert.equal((patch.match(/- id: lab-/gu) ?? []).length, 2);
 });
 

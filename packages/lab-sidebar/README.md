@@ -16,7 +16,7 @@ LabSideBar replaces the built-in workspace section in the DeepSeek Harness sideb
 LabSideBar is a DeepSeek Harness plugin, not a standalone application.
 
 1. Open **Plugins** in DeepSeek Harness.
-2. Install the npm bundle `dsh-lab-sidebar` with the plugin manager.
+2. Install the npm bundle `dsh-workspaces` with the plugin manager.
 3. Enable the bundle if it is not already enabled.
 4. Reload the window if the plugin manager requests it.
 
